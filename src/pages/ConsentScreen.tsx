@@ -85,7 +85,7 @@ const ConsentScreen = () => {
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
       
-      <main className="flex-1 px-6 pt-4 pb-20 overflow-y-auto">
+      <main className="flex-1 px-6 pt-4 pb-32 overflow-y-auto">
         <div className="max-w-md mx-auto">
           <LiveCamera />
 
@@ -113,24 +113,26 @@ const ConsentScreen = () => {
               <span className="text-sm font-medium text-destructive">Recording in progress...</span>
             </div>
           )}
-
-          <div className="flex gap-3">
-            <Button
-              variant="outline"
-              className="flex-1"
-              onClick={() => window.history.back()}
-            >
-              Need Help
-            </Button>
-            <Button
-              className="flex-1"
-              onClick={stopRecordingAndDownload}
-            >
-              I Agree
-            </Button>
-          </div>
         </div>
       </main>
+
+      <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border px-6 py-4 z-10">
+        <div className="max-w-md mx-auto flex gap-3">
+          <Button
+            variant="outline"
+            className="flex-1"
+            onClick={() => window.history.back()}
+          >
+            Need Help
+          </Button>
+          <Button
+            className="flex-1"
+            onClick={stopRecordingAndDownload}
+          >
+            I Agree
+          </Button>
+        </div>
+      </div>
 
       <Footer />
     </div>

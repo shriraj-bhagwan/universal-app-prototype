@@ -60,7 +60,7 @@ const PolicyDetailsScreen = () => {
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
       
-      <main className="flex-1 px-6 pt-4 pb-24 overflow-y-auto">
+      <main className="flex-1 px-6 pt-4 pb-32 overflow-y-auto">
         <div className="max-w-md mx-auto">
           <LiveCamera />
 
@@ -91,7 +91,7 @@ const PolicyDetailsScreen = () => {
             To view more details, please download the below file
           </p>
 
-          <button className="w-full bg-background border border-border rounded-lg px-4 py-3 flex items-center justify-between mb-24 hover:bg-accent/5 transition-colors">
+          <button className="w-full bg-background border border-border rounded-lg px-4 py-3 flex items-center justify-between mb-6 hover:bg-accent/5 transition-colors">
             <div className="flex items-center gap-3">
               <div className="text-2xl">📄</div>
               <span className="text-sm font-medium text-foreground">Benefit Illustration</span>
@@ -101,23 +101,21 @@ const PolicyDetailsScreen = () => {
         </div>
       </main>
 
-      <div className="fixed bottom-16 left-0 right-0 px-6 pb-4 z-20">
-        <div className="max-w-md mx-auto bg-background border border-border rounded-lg p-3 shadow-lg">
-          <div className="flex gap-3">
-            <Button
-              variant="outline"
-              className="flex-1 h-11"
-              onClick={() => window.history.back()}
-            >
-              Need Help
-            </Button>
-            <Button
-              className="flex-1 h-11"
-              onClick={handleUnderstood}
-            >
-              Understood
-            </Button>
-          </div>
+      <div className="fixed bottom-0 left-0 right-0 px-6 py-4 z-20 bg-background border-t border-border">
+        <div className="max-w-md mx-auto flex gap-3">
+          <Button
+            variant="outline"
+            className="flex-1"
+            onClick={() => window.history.back()}
+          >
+            Need Help
+          </Button>
+          <Button
+            className="flex-1"
+            onClick={handleUnderstood}
+          >
+            Understood
+          </Button>
         </div>
       </div>
 

@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { UserProvider } from "./contexts/UserContext";
 import WhatsAppScreen from "./pages/WhatsAppScreen";
 import LanguageSelection from "./pages/LanguageSelection";
+import PermissionsScreen from "./pages/PermissionsScreen";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -18,9 +19,10 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Navigate to="/whatsapp" replace />} />
+            <Route path="/" element={<Navigate to="/language-selection" replace />} />
             <Route path="/whatsapp" element={<WhatsAppScreen />} />
             <Route path="/language-selection" element={<LanguageSelection />} />
+            <Route path="/permissions" element={<PermissionsScreen />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

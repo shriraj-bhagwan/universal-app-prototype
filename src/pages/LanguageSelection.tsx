@@ -26,6 +26,10 @@ const LanguageSelection = () => {
     // TODO: Trigger audio playback for selected language
   };
 
+  const handleContinue = () => {
+    navigate('/permissions');
+  };
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
@@ -81,6 +85,15 @@ const LanguageSelection = () => {
                 </Button>
               ))}
             </div>
+
+            {/* Continue Button */}
+            <Button
+              onClick={handleContinue}
+              size="lg"
+              className="w-full mt-4"
+            >
+              Continue
+            </Button>
           </div>
         </div>
       </main>

@@ -102,7 +102,7 @@ const PolicyDetailsScreen = () => {
       </main>
 
       <div className="fixed bottom-0 left-0 right-0 px-6 py-4 z-20 bg-background border-t border-border">
-        <div className="max-w-md mx-auto flex gap-3">
+        <div className="max-w-md mx-auto w-full flex gap-3">
           <Button
             variant="outline"
             className="flex-1"

@@ -41,6 +41,9 @@ All colors MUST be HSL.
     --leaf-blue: 207 90% 54%;
     --leaf-coral: 4 79% 52%;
     --leaf-navy: 217 33% 17%;
+    
+    --gradient-bg: linear-gradient(156.06deg, #EBF8FF 17.36%, #FFFFFF 49.37%);
+    --container-shadow: 0px 4px 4px 0px #00000040;
 
     --sidebar-background: 0 0% 98%;
 
@@ -105,5 +108,20 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #f5f5f5;
+  }
+  
+  #root {
+    width: 360px;
+    height: 800px;
+    border-radius: 20px;
+    background: var(--gradient-bg);
+    box-shadow: var(--container-shadow);
+    overflow: hidden;
+    position: relative;
   }
 }

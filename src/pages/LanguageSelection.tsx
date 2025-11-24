@@ -24,9 +24,6 @@ const LanguageSelection = () => {
     setSelected(languageCode);
     setSelectedLanguage(languageCode);
     // TODO: Trigger audio playback for selected language
-  };
-
-  const handleContinue = () => {
     navigate('/permissions');
   };
 
@@ -85,15 +82,6 @@ const LanguageSelection = () => {
                 </Button>
               ))}
             </div>
-
-            {/* Continue Button */}
-            <Button
-              onClick={handleContinue}
-              size="lg"
-              className="w-full mt-4"
-            >
-              Continue
-            </Button>
           </div>
         </div>
       </main>

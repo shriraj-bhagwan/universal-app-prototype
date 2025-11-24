@@ -10,19 +10,13 @@ const PermissionsScreen = () => {
 
   const handleAllowAccess = async () => {
     try {
-      // Request microphone permission
-      const audioStream = await navigator.mediaDevices.getUserMedia({ 
+      // Request camera and microphone permissions together in one prompt
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: true,
         audio: true 
       });
-      console.log('Microphone access granted');
-      audioStream.getTracks().forEach(track => track.stop());
-
-      // Request camera permission
-      const videoStream = await navigator.mediaDevices.getUserMedia({ 
-        video: true 
-      });
-      console.log('Camera access granted');
-      videoStream.getTracks().forEach(track => track.stop());
+      console.log('Camera and microphone access granted');
+      stream.getTracks().forEach(track => track.stop());
 
       // Request location permission
       if ('geolocation' in navigator) {

@@ -7,6 +7,7 @@ import { UserProvider } from "./contexts/UserContext";
 import WhatsAppScreen from "./pages/WhatsAppScreen";
 import LanguageSelection from "./pages/LanguageSelection";
 import PermissionsScreen from "./pages/PermissionsScreen";
+import PolicyIntroScreen from "./pages/PolicyIntroScreen";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
             <Route path="/whatsapp" element={<WhatsAppScreen />} />
             <Route path="/language-selection" element={<LanguageSelection />} />
             <Route path="/permissions" element={<PermissionsScreen />} />
+            <Route path="/policy-intro" element={<PolicyIntroScreen />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

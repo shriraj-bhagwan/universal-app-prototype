@@ -8,11 +8,45 @@ import { Mic, Camera, MapPin } from 'lucide-react';
 const PermissionsScreen = () => {
   const navigate = useNavigate();
 
-  const handleAllowAccess = () => {
-    // Handle permission requests here
-    console.log('Requesting permissions...');
-    // Navigate to next screen after permissions are granted
-    navigate('/whatsapp');
+  const handleAllowAccess = async () => {
+    try {
+      // Request microphone permission
+      const audioStream = await navigator.mediaDevices.getUserMedia({ 
+        audio: true 
+      });
+      console.log('Microphone access granted');
+      audioStream.getTracks().forEach(track => track.stop());
+
+      // Request camera permission
+      const videoStream = await navigator.mediaDevices.getUserMedia({ 
+        video: true 
+      });
+      console.log('Camera access granted');
+      videoStream.getTracks().forEach(track => track.stop());
+
+      // Request location permission
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            console.log('Location access granted:', position.coords);
+            // Navigate to policy intro screen after all permissions granted
+            navigate('/policy-intro');
+          },
+          (error) => {
+            console.error('Location access denied:', error);
+            // Still navigate even if location is denied (optional)
+            navigate('/policy-intro');
+          }
+        );
+      } else {
+        console.log('Geolocation not supported');
+        navigate('/policy-intro');
+      }
+    } catch (error) {
+      console.error('Permission error:', error);
+      // Handle error - maybe show a toast notification
+      alert('Please allow access to camera, microphone, and location to continue.');
+    }
   };
 
   return (

@@ -1,1 +1,4 @@
 project_id = "lkcbghglyfyrfowefaty"
+
+[functions.gcp-audio]
+verify_jwt = false

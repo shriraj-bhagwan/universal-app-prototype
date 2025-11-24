@@ -2,7 +2,16 @@ import leafFooter from '@/assets/leaf-footer.png';
 
 const Footer = () => {
   return (
-    <footer className="fixed bottom-0 right-0 w-32 h-32 pointer-events-none">
+    <footer 
+      className="absolute pointer-events-none"
+      style={{
+        width: '122.29px',
+        height: '160.22px',
+        top: '640px',
+        left: '255px',
+        opacity: 1
+      }}
+    >
       <img 
         src={leafFooter} 
         alt="" 

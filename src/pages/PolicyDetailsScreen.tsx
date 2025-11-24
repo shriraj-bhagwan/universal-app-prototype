@@ -34,8 +34,42 @@ const PolicyDetailsScreen = () => {
             <p className="text-sm font-semibold text-foreground">Bandhan Life Income Wealth</p>
           </div>
 
-          <Accordion type="multiple" value={expandedItems} onValueChange={setExpandedItems}>
-...
+          <Accordion type="multiple" value={expandedItems} onValueChange={setExpandedItems} className="mb-6">
+            <AccordionItem value="item-1">
+              <AccordionTrigger className="text-sm font-medium text-foreground">
+                Death Benefit
+              </AccordionTrigger>
+              <AccordionContent className="text-sm text-muted-foreground">
+                In case of death during the policy term, the nominee will receive the Sum Assured along with accrued bonuses.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-2">
+              <AccordionTrigger className="text-sm font-medium text-foreground">
+                Maturity Benefit
+              </AccordionTrigger>
+              <AccordionContent className="text-sm text-muted-foreground">
+                On survival till the end of the policy term, you will receive the Sum Assured along with accumulated bonuses and loyalty additions, if any.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-3">
+              <AccordionTrigger className="text-sm font-medium text-foreground">
+                Income Benefit
+              </AccordionTrigger>
+              <AccordionContent className="text-sm text-muted-foreground">
+                Regular income payouts starting from a specified year as per your policy terms, providing financial stability during the income phase.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-4">
+              <AccordionTrigger className="text-sm font-medium text-foreground">
+                Tax Benefits
+              </AccordionTrigger>
+              <AccordionContent className="text-sm text-muted-foreground">
+                Premiums paid are eligible for tax deductions under Section 80C, and maturity proceeds are tax-free under Section 10(10D) of the Income Tax Act, subject to conditions.
+              </AccordionContent>
+            </AccordionItem>
           </Accordion>
 
           <p className="text-xs text-center text-muted-foreground mb-3">

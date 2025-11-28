@@ -5,18 +5,16 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import AvatarCharacter from '@/components/AvatarCharacter';
 import AudioPlayer from '@/components/AudioPlayer';
+import TypewriterText from '@/components/TypewriterText';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 const languages = [
   { code: 'english', label: 'English' },
-  { code: 'hindi', label: 'हिंदी' },
-  { code: 'malayalam', label: 'മലയാളം' },
-  { code: 'tamil', label: 'தமிழ்' },
 ];
 
 const LanguageSelection = () => {
-  const { userName, setSelectedLanguage } = useUser();
+  const { userName, selectedLanguage, setSelectedLanguage } = useUser();
   const [selected, setSelected] = useState('english');
   const navigate = useNavigate();
 
@@ -42,7 +40,18 @@ const LanguageSelection = () => {
             {/* Speech bubble */}
             <div className="relative bg-card border border-border rounded-2xl p-4 shadow-sm">
               <p className="text-sm text-foreground">
-                Hi {userName}. This quick step helps you know your policy better. Its benefits, terms, and what's important. It'll only take two minutes.
+                <TypewriterText
+                  text={
+                    selectedLanguage === 'hindi'
+                      ? `नमस्ते ${userName}। यह छोटा सा चरण आपको अपनी पॉलिसी बेहतर तरीके से समझने में मदद करेगा—फायदे, शर्तें और जरूरी बातें। इसमें केवल दो मिनट लगेंगे।`
+                      : selectedLanguage === 'malayalam'
+                        ? `ഹായ് ${userName}. നിങ്ങളുടെ പോളിസിയെ കുറിച്ച് കൂടുതൽ അറിയാൻ ഈ ചുരുങ്ങിയ ഘട്ടം സഹായിക്കും. ആനുകൂല്യങ്ങളും നിബന്ധനകളും പ്രധാന കാര്യങ്ങളും നിങ്ങൾക്ക് വ്യക്തമായി മനസ്സിലാകും. രണ്ട് മിനിറ്റിൽ പൂർത്തിയാകും.`
+                        : selectedLanguage === 'tamil'
+                          ? `வணக்கம் ${userName}. உங்கள் பாலிசியைப் பற்றி தெளிவாக அறிய இந்தச் சிறிய கட்டம் உதவும். பலன்கள், நிபந்தனைகள் மற்றும் முக்கிய அம்சங்களை இரண்டு நிமிடத்தில் சொல்கிறோம்.`
+                          : `Hi ${userName}. This quick step helps you know your policy better. Its benefits, terms, and what's important. It'll only take two minutes.`
+                  }
+                  speed={18}
+                />
               </p>
               {/* Speech bubble pointer */}
               <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[12px] border-t-card" />

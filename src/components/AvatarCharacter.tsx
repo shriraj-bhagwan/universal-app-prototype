@@ -4,12 +4,12 @@ import Lottie from 'lottie-react';
 const AvatarCharacter = () => {
   const [animationData, setAnimationData] = useState(null);
 
-  // Load the Lottie file
+  // Load the Lottie JSON (extracted from the .lottie bundle)
   useEffect(() => {
-    fetch('/avatar-animation.lottie')
-      .then(res => res.json())
-      .then(data => setAnimationData(data))
-      .catch(err => console.error('Error loading animation:', err));
+    fetch('/avatar-animation.json')
+      .then((res) => res.json())
+      .then((data) => setAnimationData(data))
+      .catch((err) => console.error('Error loading animation:', err));
   }, []);
 
   if (!animationData) {

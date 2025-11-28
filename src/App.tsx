@@ -25,7 +25,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Navigate to="/language-selection" replace />} />
+            <Route path="/" element={<Navigate to="/whatsapp" replace />} />
             <Route path="/whatsapp" element={<WhatsAppScreen />} />
             <Route path="/language-selection" element={<LanguageSelection />} />
             <Route path="/permissions" element={<PermissionsScreen />} />

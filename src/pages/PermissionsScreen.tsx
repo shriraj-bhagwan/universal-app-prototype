@@ -8,37 +8,37 @@ import { Mic, Camera, MapPin } from 'lucide-react';
 const PermissionsScreen = () => {
   const navigate = useNavigate();
 
+  const requestLocation = () =>
+    new Promise<GeolocationPosition>((resolve, reject) => {
+      if (!('geolocation' in navigator)) {
+        reject(new Error('Geolocation not supported'));
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(resolve, reject, {
+        enableHighAccuracy: true,
+        timeout: 10000,
+      });
+    });
+
   const handleAllowAccess = async () => {
     try {
-      // Request camera and microphone permissions together in one prompt
-      const stream = await navigator.mediaDevices.getUserMedia({ 
-        video: true,
-        audio: true 
-      });
-      console.log('Camera and microphone access granted');
-      stream.getTracks().forEach(track => track.stop());
+      // Kick off camera/mic and location prompts together from a single user gesture
+      const [stream, position] = await Promise.all([
+        navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
+        }),
+        requestLocation(),
+      ]);
 
-      // Request location permission
-      if ('geolocation' in navigator) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            console.log('Location access granted:', position.coords);
-            // Navigate to policy intro screen after all permissions granted
-            navigate('/policy-intro');
-          },
-          (error) => {
-            console.error('Location access denied:', error);
-            // Still navigate even if location is denied (optional)
-            navigate('/policy-intro');
-          }
-        );
-      } else {
-        console.log('Geolocation not supported');
-        navigate('/policy-intro');
-      }
+      console.log('Camera/mic granted');
+      stream.getTracks().forEach((track) => track.stop());
+
+      console.log('Location granted:', position.coords);
+      navigate('/policy-intro');
     } catch (error) {
       console.error('Permission error:', error);
-      // Handle error - maybe show a toast notification
       alert('Please allow access to camera, microphone, and location to continue.');
     }
   };
@@ -48,14 +48,14 @@ const PermissionsScreen = () => {
       <Header />
       
       <main className="flex-1 flex flex-col items-center justify-center px-6 py-8">
-        <AvatarCharacter />
-        
         <div className="relative mb-8 max-w-sm">
           <div className="bg-secondary/10 border border-border rounded-2xl p-4 text-sm text-foreground">
             We'll need your camera, microphone and location to begin. We'll show your face on screen during the process. This helps us confirm that you're personally reviewing your policy.
           </div>
           <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-secondary/10"></div>
         </div>
+
+        <AvatarCharacter />
 
         <h1 className="text-2xl font-semibold text-foreground mb-2">
           Pre-Issuance Verification

@@ -3,8 +3,10 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 interface UserContextType {
   userName: string;
   selectedLanguage: string;
+  audioPermissionGranted: boolean;
   setUserName: (name: string) => void;
   setSelectedLanguage: (language: string) => void;
+  setAudioPermissionGranted: (granted: boolean) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -24,14 +26,17 @@ interface UserProviderProps {
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [userName, setUserName] = useState('Ashok');
   const [selectedLanguage, setSelectedLanguage] = useState('english');
+  const [audioPermissionGranted, setAudioPermissionGranted] = useState(false);
 
   return (
     <UserContext.Provider
       value={{
         userName,
         selectedLanguage,
+        audioPermissionGranted,
         setUserName,
         setSelectedLanguage,
+        setAudioPermissionGranted,
       }}
     >
       {children}

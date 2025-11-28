@@ -123,5 +123,6 @@ All colors MUST be HSL.
     box-shadow: var(--container-shadow);
     overflow: hidden;
     position: relative;
+    z-index: 10; /* keep app content above decorative footer */
   }
 }

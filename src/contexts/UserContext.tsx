@@ -26,7 +26,17 @@ interface UserProviderProps {
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [userName, setUserName] = useState('Ashok');
   const [selectedLanguage, setSelectedLanguage] = useState('english');
-  const [audioPermissionGranted, setAudioPermissionGranted] = useState(false);
+  const [audioPermissionGranted, setAudioPermissionGrantedState] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return localStorage.getItem('audioPermissionGranted') === 'true';
+  });
+
+  const setAudioPermissionGranted = (granted: boolean) => {
+    setAudioPermissionGrantedState(granted);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('audioPermissionGranted', granted ? 'true' : 'false');
+    }
+  };
 
   return (
     <UserContext.Provider

@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowLeft,
   BadgeCheck,
@@ -11,9 +12,74 @@ import {
   Smile,
   Video,
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import bandhanLifeLogo from '@/assets/header-logo.png';
+import pivvVideo from '@/assets/pivv2.mp4';
+import pivvThumbnail from '@/assets/pivv-thumbnail.png';
+import { useUser } from '@/contexts/UserContext';
+import { copy } from '@/config/copy';
 
 const WhatsAppScreen = () => {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const navigate = useNavigate();
+  const { setAudioPermissionGranted } = useUser();
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [previewSrc, setPreviewSrc] = useState<string>(pivvThumbnail);
+  const pipSupported = useMemo(
+    () => typeof document !== 'undefined' && 'pictureInPictureEnabled' in document,
+    []
+  );
+
+  const messageCopy = copy.whatsapp.message(copy.whatsapp.defaultContext);
+
+  const handlePlay = async () => {
+    const video = videoRef.current;
+    if (!video) return;
+    try {
+      video.controls = false;
+      await video.play();
+      setIsPlaying(true);
+      if (pipSupported && !document.pictureInPictureElement && video.requestPictureInPicture) {
+        await video.requestPictureInPicture();
+      }
+    } catch {
+      setIsPlaying(false);
+    }
+  };
+
+  const handleEnded = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.controls = false;
+    video.currentTime = 0;
+    setIsPlaying(false);
+    if (document.pictureInPictureElement) {
+      void document.exitPictureInPicture();
+    }
+  };
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleLeavePiP = () => {
+      video.pause();
+      video.currentTime = 0;
+      setIsPlaying(false);
+    };
+
+    video.addEventListener('leavepictureinpicture', handleLeavePiP);
+    return () => {
+      video.removeEventListener('leavepictureinpicture', handleLeavePiP);
+    };
+  }, []);
+
+  const handleProceed = () => {
+    setAudioPermissionGranted(true);
+    //navigate('/language-selection');
+    navigate('/policy-intro');
+  };
+
   return (
     <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
       <div className="w-full max-w-[420px] rounded-[32px] border border-[#c8c1b3] bg-[#e5ddd5] shadow-[0_20px_45px_rgba(0,0,0,0.25)] overflow-hidden">
@@ -26,10 +92,10 @@ const WhatsAppScreen = () => {
             </div>
             <div className="leading-tight">
               <div className="flex items-center gap-1">
-                <span className="font-semibold text-slate-900">Bandhan Life</span>
+                <span className="font-semibold text-slate-900">{copy.whatsapp.brandName}</span>
                 <BadgeCheck className="w-4 h-4 text-[#1a8cdf]" />
               </div>
-              <p className="text-xs text-slate-500">online</p>
+              <p className="text-xs text-slate-500">{copy.whatsapp.statusText}</p>
             </div>
           </div>
           <div className="flex items-center gap-4 text-slate-700">
@@ -42,44 +108,58 @@ const WhatsAppScreen = () => {
         <div className="px-3 pb-4 pt-2 space-y-4">
           <div className="mt-2 bg-white rounded-2xl shadow-sm border border-[#e0d8c8] overflow-hidden">
             <div className="p-3">
-              <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-gradient-to-br from-slate-50 via-white to-slate-100 shadow-inner">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(0,0,0,0.08),transparent_45%),radial-gradient(circle_at_80%_80%,rgba(0,0,0,0.04),transparent_40%)]" />
-                <div className="relative flex flex-col items-center gap-2 py-6 px-4 text-center">
-                  <img src={bandhanLifeLogo} alt="Bandhan Life logo" className="w-14 h-14 object-contain drop-shadow-sm" />
-                  <p className="text-sm font-semibold text-slate-800">
-                    Bharat Ki Udaan,
-                    <br />
-                    Bandhan Se.
-                  </p>
-                  <button className="mt-3 inline-flex items-center justify-center rounded-full bg-black/70 text-white px-4 py-2 gap-2 text-sm font-medium shadow-lg">
-                    <Play className="w-4 h-4" />
-                    Watch video
-                  </button>
-                  <div className="absolute left-3 bottom-3 text-white text-xs bg-black/60 rounded-full px-2 py-1 inline-flex items-center gap-1">
-                    <Video className="w-3 h-3" />
-                    1:00
-                  </div>
+              <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-black shadow-inner">
+                <div className="relative">
+                  <video
+                    ref={videoRef}
+                    src={pivvVideo}
+                    playsInline
+                    className="w-full h-full rounded-xl bg-black"
+                    poster={previewSrc}
+                    onEnded={handleEnded}
+                  />
+                  {!isPlaying && previewSrc && (
+                    <img
+                      src={previewSrc}
+                      alt="Video preview"
+                      className="pointer-events-none absolute inset-0 w-full h-full object-cover rounded-xl"
+                    />
+                  )}
+                  {!isPlaying && (
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-black/25 via-transparent to-black/35 rounded-xl" />
+                  )}
+                  {!isPlaying && (
+                    <button
+                      onClick={handlePlay}
+                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 inline-flex items-center gap-2 rounded-full bg-black/80 text-white px-4 py-2 text-sm font-semibold shadow-lg backdrop-blur"
+                    >
+                      <Play className="w-4 h-4" />
+                      Play
+                    </button>
+                  )}
+                </div>
+                <div className="pointer-events-none absolute left-3 bottom-3 text-white text-xs bg-black/70 rounded-full px-2 py-1 inline-flex items-center gap-1">
+                  <Video className="w-3 h-3" />
+                  {copy.whatsapp.videoDuration}
                 </div>
               </div>
             </div>
 
             <div className="px-4 pb-3 text-[15px] leading-relaxed text-slate-900 space-y-1">
-              <p>Hi Ashok,</p>
-              <p>
-                💰 You’re almost there to start receiving ₹1,20,000 after 5 years from your Bandhan Life policy with proposal
-                no. ALI000000123456.
-              </p>
-              <p>Watch this video to understand your policy better.</p>
-              <p>
-                Please click on the below link to give your consent or if you want to know more details about your policy.
-              </p>
-              <div className="flex justify-end text-[11px] text-slate-500 font-medium pt-2">11.14 AM</div>
+              <p>{messageCopy.salutation}</p>
+              <p>{messageCopy.body1}</p>
+              <p>{messageCopy.body2}</p>
+              <p>{messageCopy.body3}</p>
+              <div className="flex justify-end text-[11px] text-slate-500 font-medium pt-2">{messageCopy.time}</div>
             </div>
 
             <div className="divide-y divide-slate-200 border-t border-slate-200">
-              <button className="w-full flex items-center gap-2 px-4 py-3 text-[#1a8cdf] font-semibold hover:bg-slate-50 transition-colors">
+              <button
+                onClick={handleProceed}
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 text-[#1a8cdf] font-semibold hover:bg-slate-50 transition-colors"
+              >
                 <Link2 className="w-4 h-4" />
-                Click here to proceed
+                {copy.whatsapp.cta}
               </button>
             </div>
           </div>

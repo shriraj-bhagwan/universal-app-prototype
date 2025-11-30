@@ -1,12 +1,20 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import AvatarCharacter from '@/components/AvatarCharacter';
+import AudioPlayer from '@/components/AudioPlayer';
 import { Button } from '@/components/ui/button';
 import { Mic, Camera, MapPin } from 'lucide-react';
+import { useUser } from '@/contexts/UserContext';
 
 const PermissionsScreen = () => {
   const navigate = useNavigate();
+  const { setAudioPermissionGranted } = useUser();
+
+  useEffect(() => {
+    setAudioPermissionGranted(true);
+  }, [setAudioPermissionGranted]);
 
   const requestLocation = () =>
     new Promise<GeolocationPosition>((resolve, reject) => {
@@ -91,6 +99,7 @@ const PermissionsScreen = () => {
       </main>
 
       <Footer />
+      <AudioPlayer audioKey="permissions" autoPlay />
     </div>
   );
 };

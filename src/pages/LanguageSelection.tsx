@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '@/contexts/UserContext';
 import Header from '@/components/Header';
@@ -8,15 +8,21 @@ import AudioPlayer from '@/components/AudioPlayer';
 import TypewriterText from '@/components/TypewriterText';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-
-const languages = [
-  { code: 'english', label: 'English' },
-];
+import { copy, LanguageCode } from '@/config/copy';
 
 const LanguageSelection = () => {
-  const { userName, selectedLanguage, setSelectedLanguage } = useUser();
-  const [selected, setSelected] = useState('english');
+  const { userName, selectedLanguage, setSelectedLanguage, setAudioPermissionGranted } = useUser();
+  const [selected, setSelected] = useState(selectedLanguage || 'english');
   const navigate = useNavigate();
+  const resolvedLanguage = useMemo<LanguageCode>(() => {
+    const fromList = copy.languageSelection.languages.find((lang) => lang.code === selected)?.code;
+    return (fromList ?? 'english') as LanguageCode;
+  }, [selected]);
+
+  // Ensure voiceover is allowed when landing on this screen (e.g., after refresh/deep link)
+  useEffect(() => {
+    setAudioPermissionGranted(true);
+  }, [setAudioPermissionGranted]);
 
   const handleLanguageSelect = (languageCode: string) => {
     setSelected(languageCode);
@@ -34,22 +40,15 @@ const LanguageSelection = () => {
           {/* Greeting Section */}
           <div className="text-center space-y-4">
             <h1 className="text-2xl font-bold text-foreground">
-              Greetings from <span className="text-primary">BandhanLife!</span>
+              {copy.languageSelection.title(copy.whatsapp.brandName).replace(copy.whatsapp.brandName, '')}
+              <span className="text-primary">{copy.whatsapp.brandName}!</span>
             </h1>
             
             {/* Speech bubble */}
             <div className="relative bg-card border border-border rounded-2xl p-4 shadow-sm">
               <p className="text-sm text-foreground">
                 <TypewriterText
-                  text={
-                    selectedLanguage === 'hindi'
-                      ? `नमस्ते ${userName}। यह छोटा सा चरण आपको अपनी पॉलिसी बेहतर तरीके से समझने में मदद करेगा—फायदे, शर्तें और जरूरी बातें। इसमें केवल दो मिनट लगेंगे।`
-                      : selectedLanguage === 'malayalam'
-                        ? `ഹായ് ${userName}. നിങ്ങളുടെ പോളിസിയെ കുറിച്ച് കൂടുതൽ അറിയാൻ ഈ ചുരുങ്ങിയ ഘട്ടം സഹായിക്കും. ആനുകൂല്യങ്ങളും നിബന്ധനകളും പ്രധാന കാര്യങ്ങളും നിങ്ങൾക്ക് വ്യക്തമായി മനസ്സിലാകും. രണ്ട് മിനിറ്റിൽ പൂർത്തിയാകും.`
-                        : selectedLanguage === 'tamil'
-                          ? `வணக்கம் ${userName}. உங்கள் பாலிசியைப் பற்றி தெளிவாக அறிய இந்தச் சிறிய கட்டம் உதவும். பலன்கள், நிபந்தனைகள் மற்றும் முக்கிய அம்சங்களை இரண்டு நிமிடத்தில் சொல்கிறோம்.`
-                          : `Hi ${userName}. This quick step helps you know your policy better. Its benefits, terms, and what's important. It'll only take two minutes.`
-                  }
+                  text={copy.languageSelection.greetingText(resolvedLanguage, userName)}
                   speed={18}
                 />
               </p>
@@ -65,16 +64,16 @@ const LanguageSelection = () => {
           <div className="space-y-4">
             <div className="text-center space-y-2">
               <h2 className="text-xl font-bold text-foreground">
-                Pre-Issuance Verification
+                {copy.languageSelection.subtitle}
               </h2>
               <p className="text-sm text-secondary">
-                Select your preferred language to proceed.
+                {copy.languageSelection.description}
               </p>
             </div>
 
             {/* Language Grid */}
             <div className="grid grid-cols-2 gap-3">
-              {languages.map((language) => (
+              {copy.languageSelection.languages.map((language) => (
                 <Button
                   key={language.code}
                   variant={selected === language.code ? "default" : "outline"}

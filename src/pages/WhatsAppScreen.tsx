@@ -1,11 +1,23 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Play, Video } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import bandhanLifeLogo from '@/assets/header-logo.png';
-import pivvVideo from '@/assets/pivv2.mp4';
-import pivvThumbnail from '@/assets/pivv-thumbnail.png';
-import { useUser } from '@/contexts/UserContext';
-import { copy } from '@/config/copy';
+import {
+  ArrowLeft,
+  BadgeCheck,
+  Camera,
+  Link2,
+  Mic,
+  MoreVertical,
+  Paperclip,
+  Phone,
+  Play,
+  Smile,
+  Video,
+} from "lucide-react";
+import { Play, Video } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import bandhanLifeLogo from "@/assets/header-logo.png";
+import pivvVideo from "@/assets/pivv2.mp4";
+import pivvThumbnail from "@/assets/pivv-thumbnail.png";
+import { useUser } from "@/contexts/UserContext";
+import { copy } from "@/config/copy";
 
 const WhatsAppScreen = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -13,10 +25,7 @@ const WhatsAppScreen = () => {
   const { setAudioPermissionGranted } = useUser();
   const [isPlaying, setIsPlaying] = useState(false);
   const [previewSrc, setPreviewSrc] = useState<string>(pivvThumbnail);
-  const pipSupported = useMemo(
-    () => typeof document !== 'undefined' && 'pictureInPictureEnabled' in document,
-    []
-  );
+  const pipSupported = useMemo(() => typeof document !== "undefined" && "pictureInPictureEnabled" in document, []);
 
   const messageCopy = copy.whatsapp.message(copy.whatsapp.defaultContext);
 
@@ -56,57 +65,44 @@ const WhatsAppScreen = () => {
       setIsPlaying(false);
     };
 
-    video.addEventListener('leavepictureinpicture', handleLeavePiP);
+    video.addEventListener("leavepictureinpicture", handleLeavePiP);
     return () => {
-      video.removeEventListener('leavepictureinpicture', handleLeavePiP);
+      video.removeEventListener("leavepictureinpicture", handleLeavePiP);
     };
   }, []);
 
   const handleProceed = () => {
     setAudioPermissionGranted(true);
     //navigate('/language-selection');
-    navigate('/policy-intro');
+    navigate("/policy-intro");
   };
-
-  const policyNumber = 'ALI000000921212';
-
   return (
-    <div className="min-h-[100dvh] flex flex-col bg-[#f1f4f8]">
-      {/* Header */}
-      <header className="px-4 pt-3">
-        <div className="max-w-[480px] mx-auto w-full bg-white rounded-[28px] border border-[#dbe6f3] shadow-[0_10px_26px_rgba(12,35,72,0.08)] px-5 py-3">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <img
-                src={bandhanLifeLogo}
-                alt="Bandhan Life"
-                className="h-10 w-auto object-contain min-w-[140px]"
-              />
+    <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-[420px] rounded-[32px] border border-[#c8c1b3] bg-[#e5ddd5] shadow-[0_20px_45px_rgba(0,0,0,0.25)] overflow-hidden">
+        {/* Header */}
+        <div className="bg-[#f7f7f7] px-4 py-3 flex items-center justify-between border-b border-[#dad5cc]">
+          <div className="flex items-center gap-4">
+            <ArrowLeft className="w-5 h-5 text-slate-700" />
+            <div className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center overflow-hidden">
+              <img src={bandhanLifeLogo} alt="Bandhan Life" className="w-8 h-8 object-contain" />
             </div>
-            <div className="bg-white border border-[#d7e3f7] rounded-2xl px-3 py-2 text-right shadow-[0_8px_18px_rgba(14,51,102,0.09)] min-w-[130px] flex-shrink-0">
-              <p className="text-[11px] text-[#456089] font-medium leading-tight">Proposal Number</p>
-              <p className="text-sm font-semibold text-[#0b2645] leading-tight tracking-tight whitespace-nowrap">
-                {policyNumber}
-              </p>
+            <div className="leading-tight">
+              <div className="flex items-center gap-1">
+                <span className="font-semibold text-slate-900">{copy.whatsapp.brandName}</span>
+                <BadgeCheck className="w-4 h-4 text-[#1a8cdf]" />
+              </div>
+              <p className="text-xs text-slate-500">{copy.whatsapp.statusText}</p>
             </div>
           </div>
-        </div>
-      </header>
-
-      {/* Progress Bar */}
-      <div className="px-6 mt-3">
-        <div className="max-w-[480px] mx-auto w-full h-[12px] bg-white rounded-full border border-[#dbe6f3] shadow-sm overflow-hidden">
-          <div className="flex h-full w-full">
-            <div className="bg-[#1b75bb]" style={{ width: '68%' }} />
-            <div className="bg-[#e44a4a]" style={{ width: '32%' }} />
+          <div className="flex items-center gap-4 text-slate-700">
+            <Phone className="w-5 h-5" />
+            <MoreVertical className="w-5 h-5" />
           </div>
         </div>
-      </div>
 
-      {/* Main Content */}
-      <main className="flex-1 min-h-0 px-4 pt-4 pb-32 overflow-y-auto">
-        <div className="max-w-[420px] mx-auto">
-          <div className="bg-white rounded-2xl shadow-sm border border-[#e0d8c8] overflow-hidden">
+        {/* Chat body */}
+        <div className="px-3 pb-4 pt-2 space-y-4">
+          <div className="mt-2 bg-white rounded-2xl shadow-sm border border-[#e0d8c8] overflow-hidden">
             <div className="p-3">
               <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-black shadow-inner">
                 <div className="relative">
@@ -152,31 +148,31 @@ const WhatsAppScreen = () => {
               <p>{messageCopy.body3}</p>
               <div className="flex justify-end text-[11px] text-slate-500 font-medium pt-2">{messageCopy.time}</div>
             </div>
-          </div>
-        </div>
-      </main>
-
-      {/* Footer */}
-      <footer className="fixed bottom-0 left-0 right-0 px-5 pb-5 pt-1 z-30 pointer-events-none">
-        <div className="max-w-[480px] mx-auto w-full">
-          <div className="bg-white rounded-[22px] border border-[#dbe6f3] shadow-[0_-8px_26px_rgba(13,31,67,0.14)] px-4 py-4 pointer-events-auto">
-            <div className="flex gap-3 items-center">
+            <div className="divide-y divide-slate-200 border-t border-slate-200">
               <button
-                className="flex-1 h-14 rounded-full border-[1.4px] border-[#d6deea] text-[#0b2645] bg-white font-semibold text-[15px] shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] hover:bg-slate-50 transition-colors"
-                onClick={() => window.history.back()}
-              >
-                Need Help
-              </button>
-              <button
-                className="flex-1 h-14 rounded-full bg-[#0b2645] text-white hover:bg-[#0b2645]/90 font-semibold text-[15px] transition-colors"
                 onClick={handleProceed}
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 text-[#1a8cdf] font-semibold hover:bg-slate-50 transition-colors"
               >
-                I Agree
+                <Link2 className="w-4 h-4" />
+                {copy.whatsapp.cta}
               </button>
             </div>
           </div>
+
+          <div className="flex items-center gap-3 px-3 py-2 bg-white rounded-full shadow-sm border border-[#d8cfc0]">
+            <Smile className="w-5 h-5 text-slate-500" />
+            <input
+              className="flex-1 bg-transparent text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none"
+              placeholder="Type a message"
+            />
+            <Paperclip className="w-5 h-5 text-slate-500" />
+            <Camera className="w-5 h-5 text-slate-500" />
+            <button className="w-10 h-10 rounded-full bg-[#00bfa5] flex items-center justify-center text-white shadow-md">
+              <Mic className="w-5 h-5" />
+            </button>
+          </div>
         </div>
-      </footer>
+      </div>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import { useRef, useState, useMemo, useEffect } from "react";
 import {
   ArrowLeft,
   BadgeCheck,
@@ -11,7 +12,6 @@ import {
   Smile,
   Video,
 } from "lucide-react";
-import { Play, Video } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import bandhanLifeLogo from "@/assets/header-logo.png";
 import pivvVideo from "@/assets/pivv2.mp4";

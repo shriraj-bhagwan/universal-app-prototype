@@ -319,10 +319,9 @@ const PolicyDetailsScreen = () => {
         </div>
       </main>
 
-      <footer className="fixed bottom-0 left-0 right-0 px-5 pb-5 pt-1 z-30 pointer-events-none">
-        <div className="max-w-[480px] mx-auto w-full">
-          <div className="h-[10px] w-[92%] mx-auto bg-[radial-gradient(circle,_#0b2645_1.6px,_transparent_1.6px)] bg-repeat-x bg-[length:12px_8px] opacity-70" />
-          <div className="bg-white rounded-[22px] border border-[#dbe6f3] shadow-[0_-8px_26px_rgba(13,31,67,0.14)] px-4 py-4 mt-1 pointer-events-auto">
+      <footer className="fixed bottom-4 left-4 right-4 z-30 pointer-events-none">
+        <div className="max-w-[440px] mx-auto w-full">
+          <div className="bg-white rounded-[22px] border border-[#dbe6f3] shadow-[0_-8px_26px_rgba(13,31,67,0.14)] px-4 py-4 pointer-events-auto">
             <div className="flex gap-3 items-center">
               <Button
                 variant="outline"
@@ -335,7 +334,7 @@ const PolicyDetailsScreen = () => {
                 className="flex-1 h-14 rounded-full bg-[#0b2645] text-white hover:bg-[#0b2645]/90 font-semibold text-[15px] flex items-center justify-center"
                 onClick={handleUnderstood}
               >
-                I Agree
+                Understood
               </Button>
             </div>
           </div>

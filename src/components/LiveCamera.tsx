@@ -51,7 +51,7 @@ const LiveCamera = ({ variant = 'rectangle', className }: LiveCameraProps) => {
         className={cn(
           'relative overflow-hidden border shadow-lg bg-black',
           isCircle
-            ? 'rounded-full w-56 h-56 mx-auto border-4 border-primary/80'
+            ? 'rounded-full w-56 h-56 mx-auto border-4 border-[#1b75bb]'
             : 'rounded-xl aspect-video border-primary/60'
         )}
       >

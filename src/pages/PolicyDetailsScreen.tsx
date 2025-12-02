@@ -1,12 +1,20 @@
 import { useMemo, useState } from 'react';
 import type React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import AudioPlayer from '@/components/AudioPlayer';
 import LiveCamera from '@/components/LiveCamera';
+import headerLogo from '@/assets/header-logo.png';
 import { Button } from '@/components/ui/button';
-import { BadgeIndianRupee, Download, HandCoins, ShieldCheck, Wallet } from 'lucide-react';
+import {
+  BadgeIndianRupee,
+  BatteryFull,
+  Download,
+  HandCoins,
+  ShieldCheck,
+  SignalHigh,
+  Wallet,
+  Wifi,
+} from 'lucide-react';
 
 const PolicyDetailsScreen = () => {
   const navigate = useNavigate();
@@ -164,24 +172,51 @@ const PolicyDetailsScreen = () => {
   };
 
   return (
-    <div className="min-h-[100dvh] flex flex-col bg-[#e9f3fb]">
-      <Header
-        rightContent={
-          <div className="text-right leading-tight bg-white border border-slate-200 rounded-lg px-3 py-2 shadow-sm mr-2">
-            <p className="text-[10px] uppercase tracking-[0.08em] text-slate-500">Policy No.</p>
-            <p className="text-xs font-semibold text-slate-900">{policyNumber}</p>
+    <div className="min-h-[100dvh] flex flex-col bg-[#f1f4f8]">
+      <header className="px-4 pt-3">
+        <div className="max-w-[480px] mx-auto w-full bg-white rounded-[28px] border border-[#dbe6f3] shadow-[0_10px_26px_rgba(12,35,72,0.08)] px-5 py-3">
+          <div className="flex items-center justify-between text-[#3c5675] text-[11px] mb-2">
+            <SignalHigh className="w-4 h-4" strokeWidth={1.5} />
+            <div className="flex items-center gap-2">
+              <Wifi className="w-4 h-4" strokeWidth={1.5} />
+              <BatteryFull className="w-4 h-4" strokeWidth={1.5} />
+            </div>
           </div>
-        }
-      />
 
-      <main className="flex-1 min-h-0 px-5 pt-4 pb-36 overflow-y-auto">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <img
+                src={headerLogo}
+                alt="Bandhan Life"
+                className="h-10 w-auto object-contain min-w-[140px]"
+              />
+            </div>
+            <div className="bg-white border border-[#d7e3f7] rounded-2xl px-3 py-2 text-right shadow-[0_8px_18px_rgba(14,51,102,0.09)] min-w-[168px] flex-shrink-0">
+              <p className="text-[11px] text-[#456089] font-medium leading-tight">Proposal Number</p>
+              <p className="text-sm font-semibold text-[#0b2645] leading-tight tracking-tight whitespace-nowrap">
+                {policyNumber}
+              </p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div className="px-6 mt-3">
+        <div className="max-w-[480px] mx-auto w-full h-[12px] bg-white rounded-full border border-[#dbe6f3] shadow-sm overflow-hidden">
+          <div className="flex h-full w-full">
+            <div className="bg-[#1b75bb]" style={{ width: '68%' }} />
+            <div className="bg-[#e44a4a]" style={{ width: '32%' }} />
+          </div>
+        </div>
+      </div>
+
+      <main className="flex-1 min-h-0 px-5 pt-4 pb-48 overflow-y-auto">
         <div className="max-w-[420px] mx-auto space-y-4">
-          <div className="w-full h-2 bg-white rounded-full overflow-hidden border border-slate-200 shadow-sm">
-            <div className="h-full w-2/3 bg-[#1c6df2]" />
-          </div>
-
           <div className="flex justify-center">
-            <LiveCamera variant="circle" className="mb-1 max-w-[180px] sm:max-w-[200px]" />
+            <LiveCamera
+              variant="circle"
+              className="mb-2 max-w-[220px] sm:max-w-[240px] drop-shadow-[0_12px_24px_rgba(16,62,112,0.18)]"
+            />
           </div>
 
           <div className="bg-white rounded-full px-4 py-3 border border-dashed border-slate-300 shadow-sm text-sm font-semibold text-slate-800">
@@ -284,25 +319,29 @@ const PolicyDetailsScreen = () => {
         </div>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 px-6 py-4 z-20 bg-[#e9f3fb] border-t border-slate-200">
-        <div className="max-w-[500px] md:max-w-[640px] mx-auto w-full flex gap-3 px-1">
-          <Button
-            variant="outline"
-            className="flex-1 border-slate-300 text-slate-800 bg-white"
-            onClick={() => window.history.back()}
-          >
-            Need Help
-          </Button>
-          <Button
-            className="flex-1 bg-[#0b2645] text-white hover:bg-[#0b2645]/90"
-            onClick={handleUnderstood}
-          >
-            Understood
-          </Button>
+      <footer className="fixed bottom-0 left-0 right-0 px-5 pb-5 pt-1 z-30 pointer-events-none">
+        <div className="max-w-[480px] mx-auto w-full">
+          <div className="h-[10px] w-[92%] mx-auto bg-[radial-gradient(circle,_#0b2645_1.6px,_transparent_1.6px)] bg-repeat-x bg-[length:12px_8px] opacity-70" />
+          <div className="bg-white rounded-[22px] border border-[#dbe6f3] shadow-[0_-8px_26px_rgba(13,31,67,0.14)] px-4 py-4 mt-1 pointer-events-auto">
+            <div className="flex gap-3 items-center">
+              <Button
+                variant="outline"
+                className="flex-1 h-14 rounded-full border-[1.4px] border-[#d6deea] text-[#0b2645] bg-white font-semibold text-[15px] shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] hover:bg-white flex items-center justify-center"
+                onClick={() => window.history.back()}
+              >
+                Need Help
+              </Button>
+              <Button
+                className="flex-1 h-14 rounded-full bg-[#0b2645] text-white hover:bg-[#0b2645]/90 font-semibold text-[15px] flex items-center justify-center"
+                onClick={handleUnderstood}
+              >
+                I Agree
+              </Button>
+            </div>
+          </div>
         </div>
-      </div>
+      </footer>
 
-      <Footer />
       <AudioPlayer audioKey="policy-details" autoPlay />
     </div>
   );

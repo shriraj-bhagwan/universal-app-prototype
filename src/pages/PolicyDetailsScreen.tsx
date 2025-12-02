@@ -37,48 +37,55 @@ const PolicyDetailsScreen = () => {
     () => [
       {
         id: 'income',
-        title: 'Income from 2025 to 2083',
-        content: [
-          "Once your policy starts, you'll receive a guaranteed income of",
-          '₹1,216 every month till age 99.',
-          "You'll also receive cash bonus benefits of ₹1,824 every month.",
-          'If declared, assuming 8% per annum.',
-        ],
-        bg: 'bg-[#f7e46a]',
-        icon: <Wallet className="w-8 h-8 text-[#e6b100]" />,
+        title: 'Monthly Income',
+        subtitle: '2025 to 2083',
+        highlight: '₹1,216',
+        highlightLabel: 'per month guaranteed',
+        bonus: '+ ₹1,824 bonus/month',
+        note: 'If declared, assuming 8% p.a.',
+        gradient: 'from-amber-50 via-yellow-50 to-orange-50',
+        accentColor: 'bg-gradient-to-br from-amber-400 to-orange-500',
+        iconBg: 'bg-amber-100',
+        icon: <Wallet className="w-6 h-6 text-amber-600" />,
       },
       {
         id: 'maturity',
-        title: 'Maturity Benefit in 2083',
-        content: [
-          'Receive one time tax free lumpsum amount of',
-          '₹66,54,336',
-          '(8% p.a. assumed rate of return)',
-        ],
-        bg: 'bg-[#f8bbb7]',
-        icon: <BadgeIndianRupee className="w-8 h-8 text-[#d64545]" />,
+        title: 'Maturity Benefit',
+        subtitle: 'Year 2083',
+        highlight: '₹66,54,336',
+        highlightLabel: 'tax-free lumpsum',
+        bonus: null,
+        note: '8% p.a. assumed rate of return',
+        gradient: 'from-rose-50 via-pink-50 to-red-50',
+        accentColor: 'bg-gradient-to-br from-rose-400 to-red-500',
+        iconBg: 'bg-rose-100',
+        icon: <BadgeIndianRupee className="w-6 h-6 text-rose-600" />,
       },
       {
         id: 'life-cover',
-        title: 'Life cover till 2083',
-        content: [
-          'In case of any unfortunate event,',
-          'your nominee will receive sum of',
-          '₹11,00,000.',
-        ],
-        bg: 'bg-[#e7ebed]',
-        icon: <ShieldCheck className="w-8 h-8 text-[#4c718d]" />,
+        title: 'Life Cover',
+        subtitle: 'Till 2083',
+        highlight: '₹11,00,000',
+        highlightLabel: 'nominee receives',
+        bonus: null,
+        note: 'In case of unfortunate event',
+        gradient: 'from-sky-50 via-blue-50 to-indigo-50',
+        accentColor: 'bg-gradient-to-br from-sky-400 to-blue-500',
+        iconBg: 'bg-sky-100',
+        icon: <ShieldCheck className="w-6 h-6 text-sky-600" />,
       },
       {
         id: 'premium',
-        title: 'Pay Premium till 2034',
-        content: [
-          'To enjoy all these benefits, you just',
-          'have to pay premium of ₹ 1,00,000',
-          'per year for 10 yrs till 2034.',
-        ],
-        bg: 'bg-[#a8b8f2]',
-        icon: <HandCoins className="w-8 h-8 text-[#4c398d]" />,
+        title: 'Premium Payment',
+        subtitle: 'Till 2034',
+        highlight: '₹1,00,000',
+        highlightLabel: 'per year for 10 years',
+        bonus: null,
+        note: 'To enjoy all benefits',
+        gradient: 'from-violet-50 via-purple-50 to-indigo-50',
+        accentColor: 'bg-gradient-to-br from-violet-400 to-purple-500',
+        iconBg: 'bg-violet-100',
+        icon: <HandCoins className="w-6 h-6 text-violet-600" />,
       },
     ],
     []
@@ -238,26 +245,26 @@ const PolicyDetailsScreen = () => {
 
               {orderedCards.slice(0, 3).map((card, idx) => {
                 const isTopCard = idx === 0;
-                const offset = idx * 16;
-                const scale = 1 - idx * 0.04;
+                const offset = idx * 12;
+                const scale = 1 - idx * 0.035;
                 const transform = isTopCard
-                  ? `translate(${dragState.x}px, ${dragState.y}px) rotate(${dragState.x / 16}deg)`
+                  ? `translate(${dragState.x}px, ${dragState.y}px) rotate(${dragState.x / 20}deg)`
                   : `translateY(${offset}px) scale(${scale})`;
                 const transition =
                   isTopCard && dragState.isDragging
                     ? 'none'
-                    : 'transform 0.32s cubic-bezier(0.22, 1, 0.36, 1)';
+                    : 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)';
                 const borderTone =
                   isTopCard && swipeDirection === 'right'
-                    ? 'border-green-500/60 shadow-green-200/80'
+                    ? 'ring-2 ring-emerald-400 shadow-emerald-100'
                     : isTopCard && swipeDirection === 'left'
-                      ? 'border-rose-500/60 shadow-rose-200/80'
-                      : 'border-slate-200/60 shadow-slate-200/60';
+                      ? 'ring-2 ring-rose-400 shadow-rose-100'
+                      : 'ring-1 ring-black/5';
 
                 return (
                   <div
                     key={card.id}
-                    className={`${card.bg} absolute inset-0 mx-2 rounded-3xl p-5 flex flex-col justify-between border ${borderTone} shadow-xl backdrop-blur-sm`}
+                    className={`bg-gradient-to-br ${card.gradient} absolute inset-0 mx-2 rounded-[28px] p-6 flex flex-col border border-white/80 ${borderTone} shadow-[0_8px_32px_rgba(0,0,0,0.08)]`}
                     style={{
                       zIndex: orderedCards.length - idx,
                       transform,
@@ -270,36 +277,58 @@ const PolicyDetailsScreen = () => {
                     onPointerCancel={isTopCard ? handlePointerUp : undefined}
                     onTransitionEnd={isTopCard ? handleTransitionEnd : undefined}
                   >
-                    <div className="flex items-start justify-between gap-3">
+                    {/* Header */}
+                    <div className="flex items-start justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-full bg-white/80 flex items-center justify-center shadow-sm">
+                        <div className={`w-11 h-11 rounded-2xl ${card.iconBg} flex items-center justify-center shadow-sm`}>
                           {card.icon}
                         </div>
-                        <div className="flex flex-col gap-1">
-                          <p className="text-[11px] uppercase tracking-[0.12em] text-slate-600">
-                            Benefit Card
-                          </p>
-                          <h3 className="text-xl font-semibold text-slate-900 leading-tight">
-                            {card.title}
-                          </h3>
+                        <div>
+                          <h3 className="text-lg font-bold text-slate-900">{card.title}</h3>
+                          <p className="text-xs text-slate-500 font-medium">{card.subtitle}</p>
                         </div>
                       </div>
-                      <div className="text-[11px] px-3 py-1 rounded-full bg-white/80 text-slate-700 border border-white/60 shadow-sm">
-                        {(activeIndex + idx) % cards.length + 1} / {cards.length}
+                      <div className={`w-8 h-8 rounded-full ${card.accentColor} flex items-center justify-center text-white text-xs font-bold shadow-md`}>
+                        {(activeIndex + idx) % cards.length + 1}
                       </div>
                     </div>
 
-                    <div className="mt-4 space-y-2 text-sm text-slate-800">
-                      {card.content.map((line, contentIdx) => (
-                        <p key={contentIdx} className={contentIdx === 1 ? 'font-bold text-base' : ''}>
-                          {line}
-                        </p>
-                      ))}
+                    {/* Main Content */}
+                    <div className="flex-1 flex flex-col justify-center py-6">
+                      <div className="text-center space-y-2">
+                        <p className="text-4xl font-bold text-slate-900 tracking-tight">{card.highlight}</p>
+                        <p className="text-sm text-slate-600 font-medium">{card.highlightLabel}</p>
+                        {card.bonus && (
+                          <div className="inline-block mt-3 px-4 py-2 rounded-full bg-white/70 border border-white shadow-sm">
+                            <span className="text-sm font-semibold text-slate-700">{card.bonus}</span>
+                          </div>
+                        )}
+                      </div>
                     </div>
 
-                    <div className="mt-6 flex items-center justify-between text-xs text-slate-600">
-                      <span>Swipe left to skip</span>
-                      <span className="font-semibold text-slate-800">Swipe right to keep</span>
+                    {/* Footer */}
+                    <div className="space-y-3">
+                      <p className="text-xs text-slate-500 text-center">{card.note}</p>
+                      <div className="flex items-center justify-between px-2">
+                        <div className="flex items-center gap-1.5 text-xs text-slate-400">
+                          <span className="w-5 h-5 rounded-full bg-rose-100 flex items-center justify-center text-rose-500">✕</span>
+                          <span>Skip</span>
+                        </div>
+                        <div className="flex gap-1">
+                          {cards.map((_, i) => (
+                            <div
+                              key={i}
+                              className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                                i === (activeIndex + idx) % cards.length ? 'bg-slate-700' : 'bg-slate-300'
+                              }`}
+                            />
+                          ))}
+                        </div>
+                        <div className="flex items-center gap-1.5 text-xs text-slate-400">
+                          <span>Next</span>
+                          <span className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-500">→</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 );

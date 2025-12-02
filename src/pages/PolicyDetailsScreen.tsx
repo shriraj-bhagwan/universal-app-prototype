@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AudioPlayer from '@/components/AudioPlayer';
 import LiveCamera from '@/components/LiveCamera';
+import SwipeCardStack from '@/components/SwipeCardStack';
 import headerLogo from '@/assets/header-logo.png';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,13 +14,11 @@ import {
   SignalHigh,
   Wallet,
   Wifi,
-  ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
 
 const PolicyDetailsScreen = () => {
   const navigate = useNavigate();
-  const [activeIndex, setActiveIndex] = useState(0);
 
   const handleUnderstood = () => {
     navigate('/personal-details');
@@ -35,9 +34,8 @@ const PolicyDetailsScreen = () => {
         highlightLabel: 'per month guaranteed',
         bonus: '+ ₹1,824 bonus/month',
         note: 'If declared, assuming 8% p.a.',
-        color: 'bg-amber-500',
-        lightBg: 'bg-amber-50',
-        icon: <Wallet className="w-5 h-5 text-amber-600" />,
+        bgColor: 'bg-gradient-to-br from-amber-400 to-orange-500',
+        icon: <Wallet className="w-6 h-6 text-white" />,
       },
       {
         id: 'maturity',
@@ -47,9 +45,8 @@ const PolicyDetailsScreen = () => {
         highlightLabel: 'tax-free lumpsum',
         bonus: null,
         note: '8% p.a. assumed rate of return',
-        color: 'bg-rose-500',
-        lightBg: 'bg-rose-50',
-        icon: <BadgeIndianRupee className="w-5 h-5 text-rose-600" />,
+        bgColor: 'bg-gradient-to-br from-rose-400 to-pink-500',
+        icon: <BadgeIndianRupee className="w-6 h-6 text-white" />,
       },
       {
         id: 'life-cover',
@@ -59,9 +56,8 @@ const PolicyDetailsScreen = () => {
         highlightLabel: 'nominee receives',
         bonus: null,
         note: 'In case of unfortunate event',
-        color: 'bg-sky-500',
-        lightBg: 'bg-sky-50',
-        icon: <ShieldCheck className="w-5 h-5 text-sky-600" />,
+        bgColor: 'bg-gradient-to-br from-sky-400 to-blue-500',
+        icon: <ShieldCheck className="w-6 h-6 text-white" />,
       },
       {
         id: 'premium',
@@ -71,19 +67,50 @@ const PolicyDetailsScreen = () => {
         highlightLabel: 'per year for 10 years',
         bonus: null,
         note: 'To enjoy all benefits',
-        color: 'bg-violet-500',
-        lightBg: 'bg-violet-50',
-        icon: <HandCoins className="w-5 h-5 text-violet-600" />,
+        bgColor: 'bg-gradient-to-br from-violet-400 to-purple-500',
+        icon: <HandCoins className="w-6 h-6 text-white" />,
       },
     ],
     []
   );
 
-  const currentCard = cards[activeIndex];
   const policyNumber = 'ALI000000921212';
 
-  const goNext = () => setActiveIndex((prev) => (prev + 1) % cards.length);
-  const goPrev = () => setActiveIndex((prev) => (prev - 1 + cards.length) % cards.length);
+  const renderCard = (card: typeof cards[0]) => (
+    <div className={`${card.bgColor} p-5 min-h-[200px] text-white`}>
+      {/* Card Header */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+            {card.icon}
+          </div>
+          <div>
+            <h3 className="text-lg font-bold">{card.title}</h3>
+            <p className="text-xs text-white/80">{card.subtitle}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Highlight Value */}
+      <div className="text-center py-4">
+        <p className="text-4xl font-bold tracking-tight">{card.highlight}</p>
+        <p className="text-sm text-white/90 mt-1">{card.highlightLabel}</p>
+        {card.bonus && (
+          <p className="text-sm font-semibold mt-3 bg-white/20 backdrop-blur-sm rounded-full px-4 py-1.5 inline-block">
+            {card.bonus}
+          </p>
+        )}
+      </div>
+
+      {/* Note */}
+      <p className="text-xs text-white/70 text-center mt-2">{card.note}</p>
+
+      {/* Swipe hint */}
+      <p className="text-[10px] text-white/50 text-center mt-4 tracking-wide uppercase">
+        Swipe to explore →
+      </p>
+    </div>
+  );
 
   return (
     <div className="min-h-[100dvh] flex flex-col bg-gradient-to-b from-slate-50 to-slate-100">
@@ -122,7 +149,7 @@ const PolicyDetailsScreen = () => {
         <div className="max-w-[420px] mx-auto space-y-4">
           {/* Camera */}
           <div className="flex justify-center">
-            <LiveCamera variant="circle" className="w-[160px] h-[160px]" />
+            <LiveCamera variant="circle" className="w-[140px] h-[140px]" />
           </div>
 
           {/* Plan Name */}
@@ -133,75 +160,19 @@ const PolicyDetailsScreen = () => {
 
           {/* Policy Benefits Section */}
           <div>
-            <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-2 px-1">
+            <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-3 px-1">
               Policy Benefits
             </p>
 
-            {/* Single Card Display */}
-            <div className={`${currentCard.lightBg} rounded-2xl p-5 border border-white shadow-sm`}>
-              {/* Card Header */}
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-xl bg-white/80 flex items-center justify-center shadow-sm">
-                    {currentCard.icon}
-                  </div>
-                  <div>
-                    <h3 className="text-base font-bold text-slate-800">{currentCard.title}</h3>
-                    <p className="text-xs text-slate-500">{currentCard.subtitle}</p>
-                  </div>
-                </div>
-                <div className={`w-7 h-7 rounded-full ${currentCard.color} flex items-center justify-center text-white text-xs font-bold`}>
-                  {activeIndex + 1}
-                </div>
-              </div>
-
-              {/* Highlight Value */}
-              <div className="text-center py-4">
-                <p className="text-3xl font-bold text-slate-900">{currentCard.highlight}</p>
-                <p className="text-sm text-slate-600 mt-1">{currentCard.highlightLabel}</p>
-                {currentCard.bonus && (
-                  <p className="text-sm font-medium text-slate-700 mt-2 bg-white/60 rounded-full px-3 py-1 inline-block">
-                    {currentCard.bonus}
-                  </p>
-                )}
-              </div>
-
-              {/* Note */}
-              <p className="text-xs text-slate-500 text-center">{currentCard.note}</p>
-
-              {/* Navigation */}
-              <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/50">
-                <button 
-                  onClick={goPrev}
-                  className="flex items-center gap-1 text-xs text-slate-500 hover:text-slate-700 transition-colors"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                  <span>Prev</span>
-                </button>
-                <div className="flex gap-1.5">
-                  {cards.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setActiveIndex(i)}
-                      className={`w-2 h-2 rounded-full transition-all ${
-                        i === activeIndex ? 'bg-slate-700 w-4' : 'bg-slate-300'
-                      }`}
-                    />
-                  ))}
-                </div>
-                <button 
-                  onClick={goNext}
-                  className="flex items-center gap-1 text-xs text-slate-500 hover:text-slate-700 transition-colors"
-                >
-                  <span>Next</span>
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
+            {/* Swipe Card Stack */}
+            <SwipeCardStack
+              cards={cards.map(c => ({ id: c.id, data: c }))}
+              renderCard={(card) => renderCard(card.data)}
+            />
           </div>
 
           {/* Benefit Illustration */}
-          <button className="w-full bg-white rounded-xl px-4 py-3 border border-slate-200 shadow-sm flex items-center justify-between hover:bg-slate-50 transition-colors">
+          <button className="w-full bg-white rounded-xl px-4 py-3 border border-slate-200 shadow-sm flex items-center justify-between hover:bg-slate-50 transition-colors mt-8">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center">
                 <Download className="w-4 h-4 text-slate-600" />

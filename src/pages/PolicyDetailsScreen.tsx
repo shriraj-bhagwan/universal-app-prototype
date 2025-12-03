@@ -126,7 +126,7 @@ const PolicyDetailsScreen = ({ cards = defaultCards, enableVoiceover = true }: P
 
         {/* Swipe hint */}
         <p className="text-[9px] text-white/50 text-center mt-2 tracking-wide uppercase">
-          Tap to explore →
+          TAP HERE →
         </p>
       </div>
     );
@@ -195,7 +195,7 @@ const PolicyDetailsScreen = ({ cards = defaultCards, enableVoiceover = true }: P
             <SwipeCardStack
               cards={cards.map(c => ({ id: c.id, data: c }))}
               renderCard={(card) => renderCard(card.data)}
-              cardHeight={180}
+              cardHeight={215}
             />
           </div>
 

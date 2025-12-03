@@ -10,9 +10,10 @@ interface SwipeCardStackProps<T> {
   cards: Card<T>[];
   onSwipe?: (direction: 'left' | 'right', card: Card<T>) => void;
   renderCard: (card: Card<T>, index: number) => ReactNode;
+  cardHeight?: number;
 }
 
-const SwipeCardStack = <T,>({ cards, onSwipe, renderCard }: SwipeCardStackProps<T>) => {
+const SwipeCardStack = <T,>({ cards, onSwipe, renderCard, cardHeight = 280 }: SwipeCardStackProps<T>) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [exitDirection, setExitDirection] = useState<'left' | 'right' | null>(null);
 
@@ -31,7 +32,7 @@ const SwipeCardStack = <T,>({ cards, onSwipe, renderCard }: SwipeCardStackProps<
   };
 
   return (
-    <div className="relative w-full h-[280px] flex items-center justify-center">
+    <div className="relative w-full flex items-center justify-center" style={{ height: cardHeight + 40 }}>
       <AnimatePresence mode="popLayout">
         {visibleCards.map((card, index) => (
           <SwipeCard

@@ -35,7 +35,7 @@ const PolicyDetailsScreen = () => {
         bonus: '+ ₹1,824 bonus/month',
         note: 'If declared, assuming 8% p.a.',
         bgColor: 'bg-gradient-to-br from-amber-400 to-orange-500',
-        icon: <Wallet className="w-6 h-6 text-white" />,
+        icon: <Wallet className="w-5 h-5 text-white" />,
       },
       {
         id: 'maturity',
@@ -46,7 +46,7 @@ const PolicyDetailsScreen = () => {
         bonus: null,
         note: '8% p.a. assumed rate of return',
         bgColor: 'bg-gradient-to-br from-rose-400 to-pink-500',
-        icon: <BadgeIndianRupee className="w-6 h-6 text-white" />,
+        icon: <BadgeIndianRupee className="w-5 h-5 text-white" />,
       },
       {
         id: 'life-cover',
@@ -57,7 +57,7 @@ const PolicyDetailsScreen = () => {
         bonus: null,
         note: 'In case of unfortunate event',
         bgColor: 'bg-gradient-to-br from-sky-400 to-blue-500',
-        icon: <ShieldCheck className="w-6 h-6 text-white" />,
+        icon: <ShieldCheck className="w-5 h-5 text-white" />,
       },
       {
         id: 'premium',
@@ -68,7 +68,7 @@ const PolicyDetailsScreen = () => {
         bonus: null,
         note: 'To enjoy all benefits',
         bgColor: 'bg-gradient-to-br from-violet-400 to-purple-500',
-        icon: <HandCoins className="w-6 h-6 text-white" />,
+        icon: <HandCoins className="w-5 h-5 text-white" />,
       },
     ],
     []
@@ -77,37 +77,35 @@ const PolicyDetailsScreen = () => {
   const policyNumber = 'ALI000000921212';
 
   const renderCard = (card: typeof cards[0]) => (
-    <div className={`${card.bgColor} p-5 min-h-[200px] text-white`}>
+    <div className={`${card.bgColor} p-4 text-white`}>
       {/* Card Header */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-            {card.icon}
-          </div>
-          <div>
-            <h3 className="text-lg font-bold">{card.title}</h3>
-            <p className="text-xs text-white/80">{card.subtitle}</p>
-          </div>
+      <div className="flex items-center gap-2 mb-2">
+        <div className="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
+          {card.icon}
+        </div>
+        <div>
+          <h3 className="text-sm font-bold">{card.title}</h3>
+          <p className="text-[10px] text-white/80">{card.subtitle}</p>
         </div>
       </div>
 
       {/* Highlight Value */}
-      <div className="text-center py-4">
-        <p className="text-4xl font-bold tracking-tight">{card.highlight}</p>
-        <p className="text-sm text-white/90 mt-1">{card.highlightLabel}</p>
+      <div className="text-center py-2">
+        <p className="text-2xl font-bold tracking-tight">{card.highlight}</p>
+        <p className="text-xs text-white/90">{card.highlightLabel}</p>
         {card.bonus && (
-          <p className="text-sm font-semibold mt-3 bg-white/20 backdrop-blur-sm rounded-full px-4 py-1.5 inline-block">
+          <p className="text-xs font-semibold mt-1 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 inline-block">
             {card.bonus}
           </p>
         )}
       </div>
 
       {/* Note */}
-      <p className="text-xs text-white/70 text-center mt-2">{card.note}</p>
+      <p className="text-[10px] text-white/70 text-center">{card.note}</p>
 
       {/* Swipe hint */}
-      <p className="text-[10px] text-white/50 text-center mt-4 tracking-wide uppercase">
-        Swipe to explore →
+      <p className="text-[9px] text-white/50 text-center mt-2 tracking-wide uppercase">
+        Tap to explore →
       </p>
     </div>
   );
@@ -145,22 +143,27 @@ const PolicyDetailsScreen = () => {
       </div>
 
       {/* Main Content */}
-      <main className="flex-1 px-4 pb-32 overflow-y-auto">
-        <div className="max-w-[420px] mx-auto space-y-4">
-          {/* Camera */}
-          <div className="flex justify-center">
-            <LiveCamera variant="circle" className="w-[80px] h-[80px]" />
-          </div>
-
-          {/* Plan Name */}
-          <div className="bg-white rounded-xl px-4 py-2.5 border border-dashed border-slate-300 text-center">
-            <span className="text-sm text-slate-500">Plan: </span>
-            <span className="text-sm font-semibold text-slate-800">Bandhan Life Income Wealth</span>
+      <main className="flex-1 px-4 pb-40 overflow-y-auto">
+        <div className="max-w-[420px] mx-auto space-y-3">
+          {/* Camera - Small floating in corner */}
+          <div className="relative">
+            <div className="absolute -top-1 right-0 z-10">
+              <LiveCamera variant="circle" className="w-[60px] h-[60px] border-2 border-[#1b75bb]" />
+              <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+                <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+              </div>
+            </div>
+            
+            {/* Plan Name */}
+            <div className="bg-white rounded-xl px-4 py-2.5 border border-dashed border-slate-300 mr-16">
+              <span className="text-sm text-slate-500">Plan: </span>
+              <span className="text-sm font-semibold text-slate-800">Bandhan Life Income Wealth</span>
+            </div>
           </div>
 
           {/* Policy Benefits Section */}
           <div>
-            <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-3 px-1">
+            <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-2 px-1">
               Policy Benefits
             </p>
 
@@ -168,11 +171,12 @@ const PolicyDetailsScreen = () => {
             <SwipeCardStack
               cards={cards.map(c => ({ id: c.id, data: c }))}
               renderCard={(card) => renderCard(card.data)}
+              cardHeight={180}
             />
           </div>
 
           {/* Benefit Illustration */}
-          <button className="w-full bg-white rounded-xl px-4 py-3 border border-slate-200 shadow-sm flex items-center justify-between hover:bg-slate-50 transition-colors mt-8">
+          <button className="w-full bg-white rounded-xl px-4 py-2.5 border border-slate-200 shadow-sm flex items-center justify-between hover:bg-slate-50 transition-colors">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center">
                 <Download className="w-4 h-4 text-slate-600" />

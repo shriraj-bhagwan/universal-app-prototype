@@ -213,9 +213,9 @@ const PolicyDetailsScreen = ({ cards = defaultCards, enableVoiceover = true }: P
       </main>
 
       {/* Footer */}
-      <footer className="fixed bottom-0 left-0 right-0 z-30 bg-gradient-to-t from-slate-100 via-slate-100 to-transparent pt-6 pb-4 px-4">
-        <div className="max-w-[420px] mx-auto">
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-lg p-3">
+      <footer className="fixed bottom-0 left-0 right-0 z-30 bg-gradient-to-t from-slate-100 via-slate-100 to-transparent pt-6 pb-4">
+        <div className="w-full">
+          <div className="bg-white border-t border-slate-200 shadow-lg p-3">
             <div className="flex gap-3">
               <Button
                 variant="outline"

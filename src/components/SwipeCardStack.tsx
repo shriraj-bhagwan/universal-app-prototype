@@ -32,7 +32,7 @@ const SwipeCardStack = <T,>({ cards, onSwipe, renderCard, cardHeight = 280 }: Sw
   };
 
   return (
-    <div className="relative w-full flex justify-center" style={{ height: cardHeight + 40 }}>
+    <div className="relative w-full flex justify-center" style={{ height: cardHeight }}>
       <AnimatePresence mode="popLayout">
         {visibleCards.map((card, index) => (
           <SwipeCard
@@ -48,20 +48,6 @@ const SwipeCardStack = <T,>({ cards, onSwipe, renderCard, cardHeight = 280 }: Sw
           </SwipeCard>
         ))}
       </AnimatePresence>
-      
-      {/* Navigation dots */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex gap-1.5">
-        {cards.map((_, i) => (
-          <div
-            key={i}
-            className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-              i === currentIndex % cards.length
-                ? 'bg-slate-700 w-4'
-                : 'bg-slate-300'
-            }`}
-          />
-        ))}
-      </div>
     </div>
   );
 };

@@ -146,7 +146,7 @@ const PolicyDetailsScreen = () => {
       <div className="px-4 mb-3">
         <div className="max-w-[480px] mx-auto flex justify-center">
           <div className="relative">
-            <LiveCamera variant="circle" className="w-[60px] h-[60px] border-2 border-[#1b75bb]" />
+            <LiveCamera variant="circle" className="w-[78px] h-[78px] border-2 border-[#1b75bb]" />
             <div className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-500 rounded-full flex items-center justify-center">
               <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
             </div>

@@ -94,12 +94,19 @@ const SwipeCard = ({ card, index, onSwipe, isTop, exitDirection, children }: Swi
     }
   };
 
+  const handleTap = () => {
+    if (isTop) {
+      onSwipe('right');
+    }
+  };
+
   const exitX = exitDirection === 'left' ? -300 : exitDirection === 'right' ? 300 : 0;
   const exitRotate = exitDirection === 'left' ? -30 : exitDirection === 'right' ? 30 : 0;
 
   return (
     <motion.div
-      className="absolute w-full max-w-[340px] cursor-grab active:cursor-grabbing"
+      className={`absolute w-full max-w-[340px] ${isTop ? 'cursor-pointer' : ''}`}
+      onTap={handleTap}
       style={{
         x: isTop ? x : 0,
         rotate: isTop ? rotate : baseRotation,

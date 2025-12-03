@@ -142,21 +142,25 @@ const PolicyDetailsScreen = () => {
         </div>
       </div>
 
+      {/* Live Camera - between progress bar and main content */}
+      <div className="px-4 mb-3">
+        <div className="max-w-[480px] mx-auto flex justify-center">
+          <div className="relative">
+            <LiveCamera variant="circle" className="w-[60px] h-[60px] border-2 border-[#1b75bb]" />
+            <div className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-500 rounded-full flex items-center justify-center">
+              <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Main Content */}
       <main className="flex-1 px-4 pb-40 overflow-hidden">
         <div className="max-w-[420px] mx-auto space-y-3 overflow-hidden">
-          {/* Plan Name with Camera */}
-          <div className="flex items-center gap-3">
-            <div className="flex-1 bg-white rounded-xl px-4 py-2.5 border border-dashed border-slate-300">
-              <span className="text-sm text-slate-500">Plan: </span>
-              <span className="text-sm font-semibold text-slate-800">Bandhan Life Income Wealth</span>
-            </div>
-            <div className="relative flex-shrink-0">
-              <LiveCamera variant="circle" className="w-[50px] h-[50px] border-2 border-[#1b75bb]" />
-              <div className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-500 rounded-full flex items-center justify-center">
-                <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-              </div>
-            </div>
+          {/* Plan Name */}
+          <div className="bg-white rounded-xl px-4 py-2.5 border border-dashed border-slate-300">
+            <span className="text-sm text-slate-500">Plan: </span>
+            <span className="text-sm font-semibold text-slate-800">Bandhan Life Income Wealth</span>
           </div>
 
           {/* Policy Benefits Section */}

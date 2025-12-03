@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AudioPlayer from '@/components/AudioPlayer';
 import LiveCamera from '@/components/LiveCamera';
@@ -15,106 +14,129 @@ import {
   Wallet,
   Wifi,
   ChevronRight,
+  LucideIcon,
 } from 'lucide-react';
 
-const PolicyDetailsScreen = () => {
+export interface PolicyCard {
+  id: string;
+  title: string;
+  subtitle: string;
+  highlight: string;
+  highlightLabel: string;
+  bonus: string | null;
+  note: string;
+  bgColor: string;
+  icon: LucideIcon;
+  voiceoverText?: string;
+}
+
+const defaultCards: PolicyCard[] = [
+  {
+    id: 'income',
+    title: 'Monthly Income',
+    subtitle: '2025 to 2083',
+    highlight: '₹1,216',
+    highlightLabel: 'per month guaranteed',
+    bonus: '+ ₹1,824 bonus/month',
+    note: 'If declared, assuming 8% p.a.',
+    bgColor: 'bg-gradient-to-br from-amber-400 to-orange-500',
+    icon: Wallet,
+    voiceoverText: 'You will receive a monthly income of 1216 rupees per month, guaranteed from 2025 to 2083, plus a bonus of 1824 rupees per month if declared.',
+  },
+  {
+    id: 'maturity',
+    title: 'Maturity Benefit',
+    subtitle: 'Year 2083',
+    highlight: '₹66,54,336',
+    highlightLabel: 'tax-free lumpsum',
+    bonus: null,
+    note: '8% p.a. assumed rate of return',
+    bgColor: 'bg-gradient-to-br from-rose-400 to-pink-500',
+    icon: BadgeIndianRupee,
+    voiceoverText: 'At maturity in 2083, you will receive a tax-free lumpsum of 66 lakh 54 thousand 336 rupees.',
+  },
+  {
+    id: 'life-cover',
+    title: 'Life Cover',
+    subtitle: 'Till 2083',
+    highlight: '₹11,00,000',
+    highlightLabel: 'nominee receives',
+    bonus: null,
+    note: 'In case of unfortunate event',
+    bgColor: 'bg-gradient-to-br from-sky-400 to-blue-500',
+    icon: ShieldCheck,
+    voiceoverText: 'Your nominee will receive 11 lakh rupees in case of an unfortunate event, providing financial security till 2083.',
+  },
+  {
+    id: 'premium',
+    title: 'Premium Payment',
+    subtitle: 'Till 2034',
+    highlight: '₹1,00,000',
+    highlightLabel: 'per year for 10 years',
+    bonus: null,
+    note: 'To enjoy all benefits',
+    bgColor: 'bg-gradient-to-br from-violet-400 to-purple-500',
+    icon: HandCoins,
+    voiceoverText: 'You need to pay a premium of 1 lakh rupees per year for 10 years till 2034 to enjoy all these benefits.',
+  },
+];
+
+interface PolicyDetailsScreenProps {
+  cards?: PolicyCard[];
+  enableVoiceover?: boolean;
+}
+
+const PolicyDetailsScreen = ({ cards = defaultCards, enableVoiceover = true }: PolicyDetailsScreenProps) => {
   const navigate = useNavigate();
 
   const handleUnderstood = () => {
     navigate('/personal-details');
   };
 
-  const cards = useMemo(
-    () => [
-      {
-        id: 'income',
-        title: 'Monthly Income',
-        subtitle: '2025 to 2083',
-        highlight: '₹1,216',
-        highlightLabel: 'per month guaranteed',
-        bonus: '+ ₹1,824 bonus/month',
-        note: 'If declared, assuming 8% p.a.',
-        bgColor: 'bg-gradient-to-br from-amber-400 to-orange-500',
-        icon: <Wallet className="w-5 h-5 text-white" />,
-      },
-      {
-        id: 'maturity',
-        title: 'Maturity Benefit',
-        subtitle: 'Year 2083',
-        highlight: '₹66,54,336',
-        highlightLabel: 'tax-free lumpsum',
-        bonus: null,
-        note: '8% p.a. assumed rate of return',
-        bgColor: 'bg-gradient-to-br from-rose-400 to-pink-500',
-        icon: <BadgeIndianRupee className="w-5 h-5 text-white" />,
-      },
-      {
-        id: 'life-cover',
-        title: 'Life Cover',
-        subtitle: 'Till 2083',
-        highlight: '₹11,00,000',
-        highlightLabel: 'nominee receives',
-        bonus: null,
-        note: 'In case of unfortunate event',
-        bgColor: 'bg-gradient-to-br from-sky-400 to-blue-500',
-        icon: <ShieldCheck className="w-5 h-5 text-white" />,
-      },
-      {
-        id: 'premium',
-        title: 'Premium Payment',
-        subtitle: 'Till 2034',
-        highlight: '₹1,00,000',
-        highlightLabel: 'per year for 10 years',
-        bonus: null,
-        note: 'To enjoy all benefits',
-        bgColor: 'bg-gradient-to-br from-violet-400 to-purple-500',
-        icon: <HandCoins className="w-5 h-5 text-white" />,
-      },
-    ],
-    []
-  );
-
   const policyNumber = 'ALI000000921212';
 
-  const renderCard = (card: typeof cards[0]) => (
-    <div className={`${card.bgColor} p-4 text-white`}>
-      {/* Card Header */}
-      <div className="flex items-center gap-2 mb-2">
-        <div className="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
-          {card.icon}
+  const renderCard = (card: PolicyCard) => {
+    const IconComponent = card.icon;
+    return (
+      <div className={`${card.bgColor} p-4 text-white`}>
+        {/* Card Header */}
+        <div className="flex items-center gap-2 mb-2">
+          <div className="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
+            <IconComponent className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h3 className="text-sm font-bold">{card.title}</h3>
+            <p className="text-[10px] text-white/80">{card.subtitle}</p>
+          </div>
         </div>
-        <div>
-          <h3 className="text-sm font-bold">{card.title}</h3>
-          <p className="text-[10px] text-white/80">{card.subtitle}</p>
+
+        {/* Highlight Value */}
+        <div className="text-center py-2">
+          <p className="text-2xl font-bold tracking-tight">{card.highlight}</p>
+          <p className="text-xs text-white/90">{card.highlightLabel}</p>
+          {card.bonus && (
+            <p className="text-xs font-semibold mt-1 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 inline-block">
+              {card.bonus}
+            </p>
+          )}
         </div>
+
+        {/* Note */}
+        <p className="text-[10px] text-white/70 text-center">{card.note}</p>
+
+        {/* Swipe hint */}
+        <p className="text-[9px] text-white/50 text-center mt-2 tracking-wide uppercase">
+          Tap to explore →
+        </p>
       </div>
-
-      {/* Highlight Value */}
-      <div className="text-center py-2">
-        <p className="text-2xl font-bold tracking-tight">{card.highlight}</p>
-        <p className="text-xs text-white/90">{card.highlightLabel}</p>
-        {card.bonus && (
-          <p className="text-xs font-semibold mt-1 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 inline-block">
-            {card.bonus}
-          </p>
-        )}
-      </div>
-
-      {/* Note */}
-      <p className="text-[10px] text-white/70 text-center">{card.note}</p>
-
-      {/* Swipe hint */}
-      <p className="text-[9px] text-white/50 text-center mt-2 tracking-wide uppercase">
-        Tap to explore →
-      </p>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="min-h-[100dvh] flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 overflow-hidden">
       {/* Header */}
-      <header className="px-4 pt-3 pb-2">
-        <div className="max-w-[480px] mx-auto w-full bg-white rounded-2xl border border-slate-200 shadow-sm px-4 py-2.5">
+      <header className="pt-3 pb-2">
+        <div className="w-full bg-white border-b border-slate-200 shadow-sm px-4 py-2.5">
           <div className="flex items-center justify-between text-slate-400 text-[10px] mb-1.5">
             <SignalHigh className="w-3.5 h-3.5" strokeWidth={1.5} />
             <div className="flex items-center gap-1.5">

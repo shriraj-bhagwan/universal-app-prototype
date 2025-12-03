@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AudioPlayer from '@/components/AudioPlayer';
 import LiveCamera from '@/components/LiveCamera';
@@ -88,6 +89,12 @@ interface PolicyDetailsScreenProps {
 
 const PolicyDetailsScreen = ({ cards = defaultCards, enableVoiceover = true }: PolicyDetailsScreenProps) => {
   const navigate = useNavigate();
+  const [cardsViewed, setCardsViewed] = useState(0);
+  const allCardsViewed = cardsViewed >= cards.length - 1;
+
+  const handleCardSwipe = () => {
+    setCardsViewed(prev => Math.min(prev + 1, cards.length - 1));
+  };
 
   const handleUnderstood = () => {
     navigate('/personal-details');
@@ -196,6 +203,7 @@ const PolicyDetailsScreen = ({ cards = defaultCards, enableVoiceover = true }: P
               cards={cards.map(c => ({ id: c.id, data: c }))}
               renderCard={(card) => renderCard(card.data)}
               cardHeight={215}
+              onSwipe={handleCardSwipe}
             />
           </div>
 
@@ -225,8 +233,9 @@ const PolicyDetailsScreen = ({ cards = defaultCards, enableVoiceover = true }: P
                 Need Help
               </Button>
               <Button
-                className="flex-1 h-12 rounded-xl bg-slate-900 text-white hover:bg-slate-800 font-medium"
+                className="flex-1 h-12 rounded-xl bg-slate-900 text-white hover:bg-slate-800 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={handleUnderstood}
+                disabled={!allCardsViewed}
               >
                 Understood
               </Button>

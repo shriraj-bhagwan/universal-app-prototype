@@ -149,7 +149,7 @@ const PolicyDetailsScreen = () => {
         <div className="max-w-[420px] mx-auto space-y-4">
           {/* Camera */}
           <div className="flex justify-center">
-            <LiveCamera variant="circle" className="w-[140px] h-[140px]" />
+            <LiveCamera variant="circle" className="w-[80px] h-[80px]" />
           </div>
 
           {/* Plan Name */}

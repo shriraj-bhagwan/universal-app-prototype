@@ -175,7 +175,7 @@ const PolicyDetailsScreen = ({ cards = defaultCards, enableVoiceover = true }: P
       <div className="px-4 mb-3">
         <div className="max-w-[480px] mx-auto flex justify-center">
           <div className="relative">
-            <LiveCamera variant="circle" className="w-[140px] h-[140px] border-2 border-[#1b75bb]" />
+            <LiveCamera variant="circle" className="w-[140px] h-[140px]" />
             <div className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-500 rounded-full flex items-center justify-center">
               <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
             </div>
@@ -184,8 +184,8 @@ const PolicyDetailsScreen = ({ cards = defaultCards, enableVoiceover = true }: P
       </div>
 
       {/* Main Content */}
-      <main className="flex-1 px-4 pb-40 overflow-hidden">
-        <div className="max-w-[420px] mx-auto space-y-3 overflow-hidden">
+      <main className="flex-1 px-4 overflow-hidden">
+        <div className="max-w-[420px] mx-auto space-y-2 overflow-hidden">
           {/* Plan Name */}
           <div className="bg-white rounded-xl px-4 py-2.5 border border-dashed border-slate-300">
             <span className="text-sm text-slate-500">Plan: </span>
@@ -208,7 +208,10 @@ const PolicyDetailsScreen = ({ cards = defaultCards, enableVoiceover = true }: P
           </div>
 
           {/* Benefit Illustration */}
-          <button className="w-full bg-white rounded-xl px-4 py-2.5 border border-slate-200 shadow-sm flex items-center justify-between hover:bg-slate-50 transition-colors">
+          <button
+            className="w-full bg-white rounded-xl px-4 py-2.5 border border-slate-200 shadow-sm flex items-center justify-between hover:bg-slate-50 transition-colors"
+            style={{ marginBottom: '5px' }}
+          >
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center">
                 <Download className="w-4 h-4 text-slate-600" />
@@ -218,12 +221,11 @@ const PolicyDetailsScreen = ({ cards = defaultCards, enableVoiceover = true }: P
             <ChevronRight className="w-4 h-4 text-slate-400" />
           </button>
         </div>
-      </main>
 
-      {/* Footer */}
-      <footer className="fixed bottom-0 left-0 right-0 z-30 bg-gradient-to-t from-slate-100 via-slate-100 to-transparent pt-6 pb-4">
-        <div className="w-full">
-          <div className="bg-white border-t border-slate-200 shadow-lg p-3">
+        
+      </main>
+<div className="pb-4">
+          <div className="bg-white border border-slate-200 shadow-lg p-3 rounded-none sm:rounded-xl">
             <div className="flex gap-3">
               <Button
                 variant="outline"
@@ -242,8 +244,6 @@ const PolicyDetailsScreen = ({ cards = defaultCards, enableVoiceover = true }: P
             </div>
           </div>
         </div>
-      </footer>
-
       <AudioPlayer audioKey="policy-details" autoPlay />
     </div>
   );

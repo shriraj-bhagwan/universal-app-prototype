@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIVV Tracking - Technical Services</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /* Header */
+        .header {
+            background-color: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon svg {
+            width: 100%;
+            height: auto;
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #133351;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            margin-left: 48px;
+        }
+
+        .nav-link {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 0;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #333;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin-right: 12px;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 2px solid #004880;
+        }
+
+        .user-avatar svg {
+            width: 20px;
+            height: 20px;
+            color: #666;
+        }
+
+        /* Main Container */
+        .container {
+            display: flex;
+            min-height: calc(100vh - 64px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background-color: #fff;
+            border-right: 1px solid #e0e0e0;
+            padding: 16px 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+        }
+
+        .sidebar-item:hover {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .sidebar-item.active {
+            background-color: #e3f2fd;
+            color: #004880;
+            border-left-color: #004880;
+        }
+
+        .sidebar-item svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 24px;
+            overflow-x: auto;
+        }
+
+        .search-bar {
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 10px 16px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            max-width: 600px;
+        }
+
+        .search-bar svg {
+            width: 20px;
+            height: 20px;
+            color: #999;
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            flex: 1;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .search-bar input::placeholder {
+            color: #999;
+        }
+
+        /* Table */
+        .table-container {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: #fafafa;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            padding: 16px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        th:first-child {
+            width: 40px;
+        }
+
+        td {
+            padding: 16px;
+            font-size: 14px;
+            color: #333;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        tr:hover {
+            background-color: #fafafa;
+        }
+
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #d0d0d0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .checkbox:hover {
+            border-color: #004880;
+        }
+
+        .policy-number {
+            color: #1976d2;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .policy-number:hover {
+            color: #004880;
+            text-decoration: underline;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .status-completed {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-in-progress {
+            background-color: #fff3e0;
+            color: #f57c00;
+        }
+
+        .status-not-started {
+            background-color: #f5f5f5;
+            color: #757575;
+        }
+
+        .copy-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            margin-left: 8px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+
+        .copy-icon:hover {
+            opacity: 1;
+        }
+
+        .copy-icon svg {
+            width: 16px;
+            height: 16px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="grad1" x1="11.12" y1="17.3" x2="61.28" y2="77.71">
+                                <stop offset="0" stop-color="#e12f15"/>
+                                <stop offset=".18" stop-color="#e12f15"/>
+                                <stop offset=".42" stop-color="#bb2516"/>
+                                <stop offset=".68" stop-color="#981b17"/>
+                                <stop offset=".83" stop-color="#8b1818"/>
+                                <stop offset=".99" stop-color="#8b1818"/>
+                            </linearGradient>
+                            <linearGradient id="grad2" x1="4.35" y1="49.99" x2="99.97" y2="49.99">
+                                <stop offset="0" stop-color="#b31d26"/>
+                                <stop offset="1" stop-color="#e12f15"/>
+                            </linearGradient>
+                        </defs>
+                        <path fill="#fff" d="M44.79,6.01c-5.23,7.23-8.56,16.68-8.52,28,.05,12.45,5.36,22.82,13.72,29.69,8.31-6.87,13.8-17.05,13.64-29.46-.11-9.30-.98-17.99-9-29.04-1.28-1.77-3.51-4.05-4.67-5.15-.13,0-3.13,3.13-5.18,5.96"/>
+                        <path fill="url(#grad1)" d="M48.51.03C21.62.84,0,22.85,0,49.94s22.37,49.99,49.97,49.99c9.13,0,33.96-3.82,45.65-29.64-5.02,2.05-10.5,3.18-16.25,3.18-23.8,0-43.06-15.43-43.09-39.25-.03-12.24,3.68-22.08,9.33-29.35,1.15-1.47,3.04-3.54,4.35-4.86-.08,0-1.37.03-1.46.03"/>
+                        <path fill="url(#grad2)" d="M54.45,4.87c7.49,10,9.23,19.57,9.23,29.39,0,23.81-19.30,39.24-43.09,39.24-5.74,0-11.21-1.13-16.24-3.17,11.92,26.55,36.50,29.64,45.64,29.64,27.6,0,49.98-22.38,49.98-49.99S78.35.88,51.43.07c-.07,0-1.40-.07-1.46-.07,1.28,1.32,3.35,3.36,4.47,4.86"/>
+                        <path fill="#4678bb" d="M77.76,21.62c1.03,7.7-.31,16.31-5.01,24.98-5.17,9.52-13.52,15.29-22.76,17.11-3.54-8.69-3.55-18.76,1.69-28.21,3.92-7.09,8.16-13.39,18.87-18.56,1.71-.83,4.36-1.66,5.7-2.03.10.05,1.11,3.69,1.51,6.70"/>
+                        <path fill="#163250" d="M22.22,21.62c-1.03,7.7.31,16.31,5.01,24.98,5.17,9.52,13.52,15.29,22.76,17.11,3.54-8.69,3.55-18.76-1.69-28.21-3.92-7.09-8.16-13.39-18.87-18.56-1.71-.83-4.36-1.66-5.7-2.03-.10.05-1.11,3.69-1.51,6.70"/>
+                    </svg>
+                </div>
+                <div class="logo-text">Bandhan Life</div>
+            </div>
+            <h1 class="header-title">Technical Services</h1>
+            <nav class="nav-links">
+                <a href="#" class="nav-link">APPS ▼</a>
+                <a href="#" class="nav-link">QUICK LINKS ▼</a>
+            </nav>
+        </div>
+        <div class="header-right">
+            <div class="user-info">
+                <div class="user-name">Divya Uchil</div>
+                <div class="user-role">Approver1</div>
+            </div>
+            <div class="user-avatar">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a href="#" class="sidebar-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                </svg>
+                <span>PMS Events</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                </svg>
+                <span>FFA Doc Migration</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                <span>Bandhan Events</span>
+            </a>
+            <a href="#" class="sidebar-item active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                <span>PIVV Tracking</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                </svg>
+                <span>Short URL</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="8.5" cy="7" r="4"/>
+                    <line x1="18" y1="8" x2="23" y2="13"/>
+                    <line x1="23" y1="8" x2="18" y2="13"/>
+                </svg>
+                <span>Blocked Users</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                </svg>
+                <span>Doc Redaction</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+                <span>Login OTP</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                </svg>
+                <span>Policy Details</span>
+            </a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" placeholder="Search by Policy Number or Customer Name...">
+            </div>
+
+            <!-- Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th><div class="checkbox"></div></th>
+                            <th>Policy Number</th>
+                            <th>Customer Name</th>
+                            <th>Current Step</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><div class="checkbox"></div></td>
+                            <td>
+                                <a href="#" class="policy-number">ALI7PAP76893672</a>
+                                <span class="copy-icon" onclick="copyToClipboard('ALI7PAP76893672')">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                    </svg>
+                                </span>
+                            </td>
+                            <td>Priya Sharma</td>
+                            <td>Consent Screen</td>
+                            <td><span class="status-badge status-completed">Completed</span></td>
+                        </tr>
+                        <tr>
+                            <td><div class="checkbox"></div></td>
+                            <td>
+                                <a href="#" class="policy-number">ALI000000016482</a>
+                                <span class="copy-icon" onclick="copyToClipboard('ALI000000016482')">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                    </svg>
+                                </span>
+                            </td>
+                            <td>Rajesh Kumar</td>
+                            <td>Policy Details</td>
+                            <td><span class="status-badge status-in-progress">In Progress</span></td>
+                        </tr>
+                        <tr>
+                            <td><div class="checkbox"></div></td>
+                            <td>
+                                <a href="#" class="policy-number">ALI0SJB16401637</a>
+                                <span class="copy-icon" onclick="copyToClipboard('ALI0SJB16401637')">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                    </svg>
+                                </span>
+                            </td>
+                            <td>Anjali Deshmukh</td>
+                            <td>Welcome Screen</td>
+                            <td><span class="status-badge status-not-started">Not Started</span></td>
+                        </tr>
+                        <tr>
+                            <td><div class="checkbox"></div></td>
+                            <td>
+                                <a href="#" class="policy-number">ALI0QAP83826752</a>
+                                <span class="copy-icon" onclick="copyToClipboard('ALI0QAP83826752')">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                    </svg>
+                                </span>
+                            </td>
+                            <td>Vikram Patel</td>
+                            <td>Personal Details</td>
+                            <td><span class="status-badge status-in-progress">In Progress</span></td>
+                        </tr>
+                        <tr>
+                            <td><div class="checkbox"></div></td>
+                            <td>
+                                <a href="#" class="policy-number">ALI0QARE4889371</a>
+                                <span class="copy-icon" onclick="copyToClipboard('ALI0QARE4889371')">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                    </svg>
+                                </span>
+                            </td>
+                            <td>Sneha Reddy</td>
+                            <td>Confirmation Screen</td>
+                            <td><span class="status-badge status-completed">Completed</span></td>
+                        </tr>
+                        <tr>
+                            <td><div class="checkbox"></div></td>
+                            <td>
+                                <a href="#" class="policy-number">ALI0QAP1887990</a>
+                                <span class="copy-icon" onclick="copyToClipboard('ALI0QAP1887990')">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                    </svg>
+                                </span>
+                            </td>
+                            <td>Amit Verma</td>
+                            <td>Language Selection</td>
+                            <td><span class="status-badge status-in-progress">In Progress</span></td>
+                        </tr>
+                        <tr>
+                            <td><div class="checkbox"></div></td>
+                            <td>
+                                <a href="#" class="policy-number">ALI0QAP17653762</a>
+                                <span class="copy-icon" onclick="copyToClipboard('ALI0QAP17653762')">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                    </svg>
+                                </span>
+                            </td>
+                            <td>Kavya Gupta</td>
+                            <td>Welcome Screen</td>
+                            <td><span class="status-badge status-not-started">Not Started</span></td>
+                        </tr>
+                        <tr>
+                            <td><div class="checkbox"></div></td>
+                            <td>
+                                <a href="#" class="policy-number">ALI0QARE4241722</a>
+                                <span class="copy-icon" onclick="copyToClipboard('ALI0QARE4241722')">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                    </svg>
+                                </span>
+                            </td>
+                            <td>Arjun Singh</td>
+                            <td>Consent Screen</td>
+                            <td><span class="status-badge status-completed">Completed</span></td>
+                        </tr>
+                        <tr>
+                            <td><div class="checkbox"></div></td>
+                            <td>
+                                <a href="#" class="policy-number">ALI0QAP19779534</a>
+                                <span class="copy-icon" onclick="copyToClipboard('ALI0QAP19779534')">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                    </svg>
+                                </span>
+                            </td>
+                            <td>Neha Joshi</td>
+                            <td>Policy Intro</td>
+                            <td><span class="status-badge status-in-progress">In Progress</span></td>
+                        </tr>
+                        <tr>
+                            <td><div class="checkbox"></div></td>
+                            <td>
+                                <a href="#" class="policy-number">ALI0QAP15978162</a>
+                                <span class="copy-icon" onclick="copyToClipboard('ALI0QAP15978162')">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                    </svg>
+                                </span>
+                            </td>
+                            <td>Rahul Mehta</td>
+                            <td>Permissions Screen</td>
+                            <td><span class="status-badge status-not-started">Not Started</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Show a temporary success message
+                const tooltip = document.createElement('div');
+                tooltip.textContent = 'Copied!';
+                tooltip.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: #333;
+                    color: white;
+                    padding: 8px 16px;
+                    border-radius: 4px;
+                    font-size: 14px;
+                    z-index: 1000;
+                `;
+                document.body.appendChild(tooltip);
+                setTimeout(() => tooltip.remove(), 1500);
+            });
+        }
+
+        // Add search functionality
+        document.querySelector('.search-bar input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('tbody tr');
+
+            rows.forEach(row => {
+                const policyNumber = row.querySelector('.policy-number').textContent.toLowerCase();
+                const customerName = row.cells[2].textContent.toLowerCase();
+
+                if (policyNumber.includes(searchTerm) || customerName.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

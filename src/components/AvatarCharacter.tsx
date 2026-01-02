@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react';
 import Lottie from 'lottie-react';
 
-const AvatarCharacter = () => {
+interface AvatarCharacterProps {
+  size?: number; // Size in pixels (width and height)
+}
+
+const AvatarCharacter = ({ size = 128 }: AvatarCharacterProps) => {
   const [animationData, setAnimationData] = useState(null);
 
   // Load the Lottie JSON (extracted from the .lottie bundle)
@@ -15,16 +19,16 @@ const AvatarCharacter = () => {
   if (!animationData) {
     return (
       <div className="relative flex justify-center items-center mb-6">
-        <div className="w-32 h-32 bg-secondary/20 rounded-full animate-pulse" />
+        <div style={{ width: size, height: size }} className="bg-secondary/20 rounded-full animate-pulse" />
       </div>
     );
   }
 
   return (
     <div className="relative flex justify-center items-center mb-6">
-      <div className="w-32 h-32">
-        <Lottie 
-          animationData={animationData} 
+      <div style={{ width: size, height: size }}>
+        <Lottie
+          animationData={animationData}
           loop={true}
           autoplay={true}
         />

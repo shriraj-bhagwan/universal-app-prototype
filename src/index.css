@@ -118,9 +118,9 @@ All colors MUST be HSL.
   #root {
     width: 360px;
     height: 800px;
-    border-radius: 20px;
+    
     background: var(--gradient-bg);
-    box-shadow: var(--container-shadow);
+  
     overflow: hidden;
     position: relative;
     z-index: 10; /* keep app content above decorative footer */

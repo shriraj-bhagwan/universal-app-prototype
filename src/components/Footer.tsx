@@ -2,8 +2,8 @@ import leafFooter from '@/assets/leaf-footer.png';
 
 const Footer = () => {
   return (
-    <footer 
-      className="absolute pointer-events-none z-0"
+    <footer
+      className="absolute pointer-events-none -z-10"
       style={{
         width: '122.29px',
         height: '160.22px',

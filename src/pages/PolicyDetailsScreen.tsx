@@ -449,12 +449,7 @@ const PolicyDetailsScreen = ({ cards: cardsProp, enableVoiceover = true }: Polic
       <div className="px-4 mb-3">
         <div className="max-w-[480px] mx-auto flex justify-center">
           <div className="relative">
-            <LiveCamera
-              variant="circle"
-              className="w-[140px] h-[140px]"
-              enableFaceDetection={true}
-              onFaceDetectionChange={handleFaceDetectionChange}
-            />
+            <LiveCamera variant="circle" className="w-[140px] h-[140px]" />
             <div className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-500 rounded-full flex items-center justify-center">
               <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
             </div>
@@ -463,8 +458,8 @@ const PolicyDetailsScreen = ({ cards: cardsProp, enableVoiceover = true }: Polic
       </div>
 
       {/* Main Content */}
-      <main className="flex-1 px-4 pb-24 overflow-y-auto">
-        <div className="max-w-[420px] mx-auto space-y-3 pb-4">
+      <main className="flex-1 px-4 overflow-hidden">
+        <div className="max-w-[420px] mx-auto space-y-2 overflow-hidden">
           {/* Plan Name */}
           <div className="bg-white rounded-xl px-4 py-2.5 border border-dashed border-slate-300">
             <span className="text-sm text-slate-500">{copy.policyDetails.planLabel[language]}</span>
@@ -487,7 +482,10 @@ const PolicyDetailsScreen = ({ cards: cardsProp, enableVoiceover = true }: Polic
           </div>
 
           {/* Benefit Illustration */}
-          <button className="w-full bg-white rounded-xl px-4 py-2 border border-slate-200 shadow-sm flex items-center justify-between hover:bg-slate-50 transition-colors">
+          <button
+            className="w-full bg-white rounded-xl px-4 py-2.5 border border-slate-200 shadow-sm flex items-center justify-between hover:bg-slate-50 transition-colors"
+            style={{ marginBottom: '5px' }}
+          >
             <div className="flex items-center gap-3">
               <div className="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center">
                 <Download className="w-3.5 h-3.5 text-slate-600" />
@@ -497,30 +495,29 @@ const PolicyDetailsScreen = ({ cards: cardsProp, enableVoiceover = true }: Polic
             <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
           </button>
         </div>
-      </main>
 
-      {/* Footer - Fixed at bottom */}
-      <footer className="fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-slate-200 shadow-lg">
-        <div className="w-full max-w-[480px] mx-auto p-3">
-          <div className="flex gap-3">
-            <Button
-              variant="outline"
-              className="flex-1 h-11 rounded-xl border-2 border-[#004880] bg-white text-[#004880] font-medium hover:bg-slate-50"
-              onClick={() => window.history.back()}
-            >
-              {copy.policyDetails.needHelp[language]}
-            </Button>
-            <Button
-              className="flex-1 h-11 rounded-xl bg-[#004880] text-white hover:bg-[#003366] font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-              onClick={handleUnderstood}
-              disabled={!allCardsViewed}
-            >
-              {copy.policyDetails.understood[language]}
-            </Button>
+        
+      </main>
+<div className="pb-4">
+          <div className="bg-white border border-slate-200 shadow-lg p-3 rounded-none sm:rounded-xl">
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                className="flex-1 h-12 rounded-xl border-slate-300 text-slate-700 font-medium"
+                onClick={() => window.history.back()}
+              >
+                Need Help
+              </Button>
+              <Button
+                className="flex-1 h-12 rounded-xl bg-slate-900 text-white hover:bg-slate-800 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={handleUnderstood}
+                disabled={!allCardsViewed}
+              >
+                Understood
+              </Button>
+            </div>
           </div>
         </div>
-      </footer>
-
       <AudioPlayer audioKey="policy-details" autoPlay />
     </motion.div>
   );

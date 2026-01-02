@@ -1,14 +1,10 @@
 import { useRef, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import LivenessCheck from '@/components/LivenessCheck';
-import AudioPlayer from '@/components/AudioPlayer';
+import LiveCamera from '@/components/LiveCamera';
+import headerLogo from '@/assets/header-logo.png';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { useUser } from '@/contexts/UserContext';
-import { copy, LanguageCode } from '@/config/copy';
+import { SignalHigh, Wifi, BatteryFull } from 'lucide-react';
 
 const ConsentScreen = () => {
   const navigate = useNavigate();
@@ -22,19 +18,17 @@ const ConsentScreen = () => {
   const audioDestinationRef = useRef<MediaStreamAudioDestinationNode | null>(null);
   const audioSourcesRef = useRef<MediaElementAudioSourceNode[]>([]);
   const [isRecording, setIsRecording] = useState(false);
-  const [livenessCompleted, setLivenessCompleted] = useState(false);
-  const [showConsentForm, setShowConsentForm] = useState(false);
-  const [showRecordingIndicator, setShowRecordingIndicator] = useState(false);
-  const [audioEnded, setAudioEnded] = useState(false);
-  const [userResponse, setUserResponse] = useState<'agree' | 'disagree' | null>(null);
-  const policyNumber = 'ALI000000123456';
+  const policyNumber = 'ALI000000921212';
 
-  // Don't start recording immediately - wait for liveness to complete
-  // Recording will start in handleLivenessComplete
+  useEffect(() => {
+    startRecording();
 
-  const handleVideoStreamReady = (stream: MediaStream) => {
-    videoStreamRef.current = stream;
-  };
+    return () => {
+      if (mediaRecorderRef.current?.stream) {
+        mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, []);
 
   const startRecording = async () => {
     try {
@@ -206,15 +200,8 @@ const ConsentScreen = () => {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
 
-        // Stop all tracks
-        if (recorder.stream) {
-          recorder.stream.getTracks().forEach(track => track.stop());
-        }
-
-        // Clean up audio context
-        if (audioContextRef.current) {
-          audioContextRef.current.close();
-          audioContextRef.current = null;
+        if (mediaRecorderRef.current?.stream) {
+          mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
         }
 
         // Clear audio sources
@@ -232,145 +219,102 @@ const ConsentScreen = () => {
   };
 
   return (
-    <motion.div
-      className="min-h-[100dvh] flex flex-col overflow-hidden"
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      transition={{ duration: 0.3 }}
-    >
-      <Header
-        rightContent={
-          <div className="text-right">
-            <p className="text-[10px] text-muted-foreground">{copy.policyDetails.proposalNumber[language]}</p>
-            <p className="text-xs font-semibold text-foreground">{policyNumber}</p>
+    <div className="min-h-[100dvh] flex flex-col bg-[#f1f4f8]">
+      <header className="px-0 pt-3">
+        <div className="w-full bg-white rounded-[28px] border border-[#dbe6f3] shadow-[0_10px_26px_rgba(12,35,72,0.08)] px-5 py-3">
+          <div className="flex items-center justify-between text-[#3c5675] text-[11px] mb-2">
+            <SignalHigh className="w-4 h-4" strokeWidth={1.5} />
+            <div className="flex items-center gap-2">
+              <Wifi className="w-4 h-4" strokeWidth={1.5} />
+              <BatteryFull className="w-4 h-4" strokeWidth={1.5} />
+            </div>
           </div>
-        }
-      />
 
-      {/* Progress Bar - 100% complete */}
-      <div className="px-6 mb-2">
-        <div className="max-w-[480px] mx-auto w-full h-2 bg-slate-200 rounded-full overflow-hidden">
-          <div className="flex h-full">
-            <div className="bg-gradient-to-b from-[#1b75bb] to-[#3cacfc] transition-all" style={{ width: '100%' }} />
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <img
+                src={headerLogo}
+                alt="Bandhan Life"
+                className="h-10 w-auto object-contain min-w-[140px]"
+              />
+            </div>
+            <div className="bg-white border border-[#d7e3f7] rounded-2xl px-3 py-2 text-right shadow-[0_8px_18px_rgba(14,51,102,0.09)] min-w-[168px] flex-shrink-0">
+              <p className="text-[11px] text-[#456089] font-medium leading-tight">Proposal Number</p>
+              <p className="text-sm font-semibold text-[#0b2645] leading-tight tracking-tight whitespace-nowrap">
+                {policyNumber}
+              </p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div className="px-6 mt-3">
+        <div className="w-full h-[12px] bg-white rounded-full border border-[#dbe6f3] shadow-sm overflow-hidden">
+          <div className="flex h-full w-full">
+            <div className="bg-[#1b75bb]" style={{ width: '68%' }} />
+            <div className="bg-[#e44a4a]" style={{ width: '32%' }} />
           </div>
         </div>
       </div>
 
-      <main className="flex-1 px-6 pb-16 flex flex-col overflow-hidden min-h-0">
-        {/* Camera - positioned at top */}
-        <div className="flex justify-center mb-2 flex-shrink-0">
-          <LivenessCheck
-            className="w-[200px] h-[200px]"
-            onLivenessComplete={handleLivenessComplete}
-            hideSegmentsAfterComplete={true}
-            onStreamReady={handleVideoStreamReady}
-          />
-        </div>
+      <main className="flex-1 px-6 pt-4 pb-28 overflow-y-auto">
+        <div className="max-w-md mx-auto">
+          <div className="flex justify-center">
+            <LiveCamera
+              variant="circle"
+              className="mb-4 max-w-[232px] sm:max-w-[240px] drop-shadow-[0_12px_24px_rgba(16,62,112,0.18)]"
+            />
+          </div>
 
-        {/* Title */}
-        <h2 className="text-base font-semibold text-center text-foreground mb-2 flex-shrink-0">
-          {copy.consent.title[language]}
-        </h2>
+          <h2 className="text-lg font-semibold text-center text-foreground mb-6">Consent</h2>
 
-        {/* Instruction - Only show before liveness completes */}
-        {!livenessCompleted && (
-          <p className="text-sm text-center text-[#094771] px-4 mb-3 flex-shrink-0">
-            {copy.consent.livenessInstruction[language]}
-          </p>
-        )}
-
-        {/* Consent Form Section - shown after liveness complete */}
-        {showConsentForm && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex-1 overflow-y-auto min-h-0 -mx-6 px-6"
-          >
-            <div className="space-y-3 pb-4">
-              {/* Recording Indicator - show above statements */}
-              {showRecordingIndicator && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="bg-red-50 border border-red-200 rounded-lg p-3 flex items-center justify-center gap-2"
-                >
-                  <div className="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse" />
-                  <span className="text-xs font-medium text-red-700">{copy.consent.recordingInProgress[language]}</span>
-                </motion.div>
-              )}
-
-              {/* Statement 1 */}
-              <div className="bg-[#F8F8F8] border border-[#E0E0E0] rounded-lg p-3">
-                <p className="text-xs text-[#002B47] leading-relaxed">
-                  {copy.consent.statement1[language]}
-                </p>
-              </div>
-
-              {/* Statement 2 */}
-              <div className="bg-[#F8F8F8] border border-[#E0E0E0] rounded-lg p-3">
-                <p className="text-xs text-[#002B47] leading-relaxed">
-                  {copy.consent.statement2[language]}
-                </p>
-              </div>
+          <div className="space-y-4 mb-8">
+            <div className="bg-white border border-[#dbe6f3] rounded-2xl px-4 py-3 shadow-sm">
+              <p className="text-sm text-foreground">
+                I confirm all information shared by me is accurate.
+              </p>
             </div>
-          </motion.div>
-        )}
-      </main>
 
-      {/* Fixed Footer with Buttons */}
-      <footer className="fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-slate-200 shadow-lg">
-        <div className="w-full max-w-[480px] mx-auto p-2.5">
-          <div className="flex gap-2.5">
-            <Button
-              variant="outline"
-              className="flex-1 h-10 rounded-xl border-2 border-[#004880] bg-white text-[#004880] font-medium hover:bg-slate-50 text-sm disabled:opacity-50"
-              onClick={handleDisagree}
-              disabled={!audioEnded || userResponse !== null}
-            >
-              {copy.consent.iDisagree[language]}
-            </Button>
-            <Button
-              className="flex-1 h-10 rounded-xl bg-[#004880] text-white hover:bg-[#003366] font-medium text-sm disabled:opacity-50"
-              onClick={handleAgree}
-              disabled={!audioEnded || userResponse !== null}
-            >
-              {copy.consent.iAgree[language]}
-            </Button>
+            <div className="bg-white border border-[#dbe6f3] rounded-2xl px-4 py-3 shadow-sm">
+              <p className="text-sm text-foreground">
+                I understand this is a life insurance policy and not a fixed deposit, loan or a bank-linked product.
+              </p>
+            </div>
           </div>
         </div>
-      </footer>
+      </div>
 
-      <Footer />
+          {isRecording && (
+            <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 mb-6 flex items-center justify-center gap-2">
+              <div className="w-3 h-3 bg-destructive rounded-full animate-pulse" />
+              <span className="text-sm font-medium text-destructive">Recording in progress...</span>
+            </div>
+          )}
 
-      {/* Audio player for consent instructions - starts 1 second after recording begins */}
-      {showRecordingIndicator && !userResponse && (
-        <AudioPlayer
-          audioKey="full-consent"
-          autoPlay
-          onEnded={handleAudioEnded}
-          onAudioElementReady={mixAudioIntoRecording}
-        />
-      )}
-
-      {/* Audio player for user response - plays when user clicks agree/disagree */}
-      {userResponse === 'agree' && (
-        <AudioPlayer
-          audioKey="i-agree"
-          autoPlay
-          onEnded={handleResponseAudioEnded}
-          onAudioElementReady={mixAudioIntoRecording}
-        />
-      )}
-      {userResponse === 'disagree' && (
-        <AudioPlayer
-          audioKey="i-disagree"
-          autoPlay
-          onEnded={handleResponseAudioEnded}
-          onAudioElementReady={mixAudioIntoRecording}
-        />
-      )}
-    </motion.div>
+        </div>
+      </main>
+      <div className="fixed bottom-0 left-0 right-0 px-6 pb-4 pt-2 bg-[#f1f4f8]/95 backdrop-blur-sm z-20">
+        <div className="max-w-md mx-auto">
+          <div className="bg-white rounded-[18px] border border-[#dbe6f3] shadow-[0_-4px_16px_rgba(11,38,69,0.12)] px-4 py-3">
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                className="flex-1 h-11 rounded-full border-[1.4px] border-[#d6deea] text-[#0b2645] bg-white font-semibold text-[15px] shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] hover:bg-white"
+                onClick={() => window.history.back()}
+              >
+                Need Help
+              </Button>
+              <Button
+                className="flex-1 h-11 rounded-full bg-[#0b2645] text-white hover:bg-[#0b2645]/90 font-semibold text-[15px]"
+                onClick={stopRecordingAndDownload}
+              >
+                I Agree
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

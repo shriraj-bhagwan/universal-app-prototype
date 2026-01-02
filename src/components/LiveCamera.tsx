@@ -111,20 +111,20 @@ const LiveCamera = ({
   };
 
   return (
-    <div
-      className={cn(
-        'relative overflow-hidden border shadow-lg bg-black transition-colors duration-300',
-        isCircle ? 'rounded-full border-2' : 'rounded-xl aspect-video',
-        getBorderColor(),
-        className
-      )}
-    >
-      {error ? (
-        <div className="w-full h-full flex items-center justify-center">
-          <p className="text-[8px] text-muted-foreground text-center px-1">{error}</p>
-        </div>
-      ) : (
-        <>
+    <div className={cn('relative mx-auto', isCircle ? 'w-[232px] h-[232px] sm:w-[240px] sm:h-[240px]' : 'w-full max-w-md', className)}>
+      <div
+        className={cn(
+          'relative overflow-hidden border shadow-lg bg-black',
+          isCircle
+            ? 'rounded-full w-full h-full border-[4px] border-[#1b75bb]'
+            : 'rounded-xl aspect-video border-primary/60'
+        )}
+      >
+        {error ? (
+          <div className="w-full h-full flex items-center justify-center">
+            <p className="text-[8px] text-muted-foreground text-center px-1">{error}</p>
+          </div>
+        ) : (
           <video
             ref={videoRef}
             autoPlay
@@ -132,15 +132,8 @@ const LiveCamera = ({
             muted
             className={cn('w-full h-full object-cover', isCircle && 'rounded-full')}
           />
-          {enableFaceDetection && !faceDetected && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full">
-              <p className="text-xs font-semibold text-white bg-red-500/80 px-3 py-1.5 rounded-full">
-                Face not detected
-              </p>
-            </div>
-          )}
-        </>
-      )}
+        )}
+      </div>
     </div>
   );
 };
